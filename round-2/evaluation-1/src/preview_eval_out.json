@@ -1,0 +1,201 @@
+{
+  "metadata": {
+    "evaluation_name": "AIMD cache-policy experiment: episode-level bootstrap re-verification + schema-diff wiring-bug diagnosis + ecological-validity proxy",
+    "dependency_experiment": "art_qtEtMpLZuRGI",
+    "dependency_dataset": "art_T0onLH9xokqw",
+    "n_bootstrap_resamples": 10000,
+    "low_n_flag_threshold": 8,
+    "verdicts": {
+      "criterion_a": {
+        "criterion": "a_frontier_non_dominated",
+        "synthetic_run_verdict": "DISCONFIRMS",
+        "mean_non_dominated_fraction": 0.0,
+        "per_regime": {
+          "low_volatility": {
+            "fraction": 0.0,
+            "ci_lo": 0.0,
+            "ci_hi": 0.16666666666666663
+          },
+          "medium_volatility": {
+            "fraction": 0.0,
+            "ci_lo": 0.0,
+            "ci_hi": 0.0
+          },
+          "high_volatility": {
+            "fraction": 0.0,
+            "ci_lo": 0.0,
+            "ci_hi": 0.21041666666666475
+          }
+        },
+        "real_content_robustness_status": "UNRESOLVED_BLOCKED_ON_REEXECUTION",
+        "real_content_robustness_reason": "schema_diff confirms the dataset artifact was never loaded by method.py (dataset_artifact_ever_loaded_by_method_py=False); every number above is synthetic-simulator-only, so criterion (a)'s implicit c..."
+      },
+      "criterion_b": {
+        "criterion": "b_low_repeat_convergence_and_freshcache_failure",
+        "synthetic_run_verdict": "MIXED",
+        "per_regime": {
+          "low_volatility": {
+            "aimd_convergence_median": 12.0,
+            "baseline_convergence_medians": {
+              "d_ttl": 12.0,
+              "ewma_ttl": 7.0,
+              "freshcache": 5.0,
+              "freshcache_pooled": 5.0
+            },
+            "aimd_slower_than_baselines": true,
+            "freshcache_calibrated_fraction_wilson": {
+              "point": 0.3458333333333333,
+              "ci_lo": 0.28851201281500544,
+              "ci_hi": 0.4080122882066413,
+              "n": 240
+            }
+          },
+          "medium_volatility": {
+            "aimd_convergence_median": 12.0,
+            "baseline_convergence_medians": {
+              "d_ttl": 12.0,
+              "ewma_ttl": 8.0,
+              "freshcache": 5.0,
+              "freshcache_pooled": 5.0
+            },
+            "aimd_slower_than_baselines": true,
+            "freshcache_calibrated_fraction_wilson": {
+              "point": 0.3625,
+              "ci_lo": 0.30428862453168165,
+              "ci_hi": 0.4250438601633006,
+              "n": 240
+            }
+          },
+          "high_volatility": {
+            "aimd_convergence_median": 16.0,
+            "baseline_convergence_medians": {
+              "d_ttl": 11.0,
+              "ewma_ttl": 8.0,
+              "freshcache": 5.0,
+              "freshcache_pooled": 5.0
+            },
+            "aimd_slower_than_baselines": true,
+            "freshcache_calibrated_fraction_wilson": {
+              "point": 0.35,
+              "ci_lo": 0.2924488094298485,
+              "ci_hi": 0.4122775375101321,
+              "n": 240
+            }
+          }
+        },
+        "aimd_slower_in_n_of_3_regimes": 3,
+        "freshcache_calibration_failure_supported_in_n_of_3_regimes": 3,
+        "real_content_robustness_status": "UNRESOLVED_BLOCKED_ON_REEXECUTION",
+        "real_content_robustness_reason": "schema_diff confirms the dataset artifact was never loaded by method.py (dataset_artifact_ever_loaded_by_method_py=False); every number above is synthetic-simulator-only, so criterion (a)'s implicit c..."
+      },
+      "overall_mechanical_verdict": "MIXED_SYNTHETIC_ONLY_REAL_CONTENT_UNRESOLVED"
+    }
+  },
+  "metrics_agg": {
+    "n_cells_bootstrapped": 150,
+    "n_low_confidence_cells": 0,
+    "mean_aimd_non_dominated_fraction": 0.0,
+    "criterion_a_ci_excludes_zero_all_regimes": 0.0,
+    "aimd_slower_convergence_in_n_regimes": 3,
+    "freshcache_calibration_failure_regimes": 3,
+    "n_significance_tests_run": 27,
+    "n_significance_tests_holm_significant_p05": 17,
+    "dataset_wiring_bug_confirmed": 1.0,
+    "seed_reproducibility_bug_confirmed": 1.0,
+    "n_cells_mismatched_vs_original_stored_run": 60,
+    "real_corpus_n_resources": 329,
+    "real_corpus_static_fraction": 0.8480243161094225,
+    "real_corpus_bursty_fraction": 0.015197568389057751,
+    "runtime_seconds": 16.963132858276367
+  },
+  "datasets": [
+    {
+      "dataset": "schema_diff_report",
+      "examples": [
+        {
+          "input": "method.py vs full_data_out.json schema compatibility",
+          "output": "{\"dataset_row_fields_present\": [\"input\", \"metadata_checked\", \"metadata_content_now\", \"metadata_resource_class\", \"metadata_sim_days\", \"metadata_timing_provenance\", \"metadata_version_schedule\", \"metadat...",
+          "eval_dataset_artifact_ever_loaded_by_method_py": 0.0,
+          "eval_n_incompatible_fields": 1.0
+        }
+      ]
+    },
+    {
+      "dataset": "seed_reproducibility_finding",
+      "examples": [
+        {
+          "input": "cross-check of this re-derivation vs method_raw.json stored per_run_results",
+          "output": "{\"n_mismatched_cells\": 60, \"n_checked_cells\": 150, \"mismatched_policy_families\": [\"aimd\", \"freshcache\", \"freshcache_pooled\"], \"expected_mismatched_families_if_hash_seed_theory_correct\": [\"aimd\", \"fres...",
+          "eval_n_mismatched_cells": 60.0,
+          "eval_n_checked_cells": 150.0,
+          "eval_theory_confirmed": 1.0
+        }
+      ]
+    },
+    {
+      "dataset": "episode_bootstrap_cells",
+      "examples": [
+        {
+          "input": "episode_bootstrap_cells[0]",
+          "output": "{\"regime\": \"low_volatility\", \"policy_family\": \"fixed_ttl\", \"knob\": \"ttl=0.0\", \"hit_rate_point\": 0.0, \"hit_rate_ci_lo\": 0.0, \"hit_rate_ci_hi\": 0.0, \"stale_rate_point\": null, \"stale_rate_ci_lo\": null, \"...",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "fixed_ttl",
+          "metadata_knob": "ttl=0.0",
+          "metadata_hit_rate_point": 0.0,
+          "metadata_hit_rate_ci_lo": 0.0,
+          "metadata_hit_rate_ci_hi": 0.0,
+          "metadata_stale_rate_point": null,
+          "metadata_stale_rate_ci_lo": null,
+          "metadata_stale_rate_ci_hi": null,
+          "metadata_n_episodes": 40,
+          "eval_hit_rate_point": 0.0,
+          "eval_hit_rate_ci_lo": 0.0,
+          "eval_hit_rate_ci_hi": 0.0,
+          "eval_n_episodes": 40.0
+        },
+        {
+          "input": "episode_bootstrap_cells[1]",
+          "output": "{\"regime\": \"low_volatility\", \"policy_family\": \"fixed_ttl\", \"knob\": \"ttl=0.5\", \"hit_rate_point\": 0.09383333333333334, \"hit_rate_ci_lo\": 0.0815, \"hit_rate_ci_hi\": 0.10616666666666667, \"stale_rate_point\"...",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "fixed_ttl",
+          "metadata_knob": "ttl=0.5",
+          "metadata_hit_rate_point": 0.09383333333333334,
+          "metadata_hit_rate_ci_lo": 0.0815,
+          "metadata_hit_rate_ci_hi": 0.10616666666666667,
+          "metadata_stale_rate_point": 0.0,
+          "metadata_stale_rate_ci_lo": 0.0,
+          "metadata_stale_rate_ci_hi": 0.0,
+          "metadata_n_episodes": 40,
+          "eval_hit_rate_point": 0.09383333333333334,
+          "eval_hit_rate_ci_lo": 0.0815,
+          "eval_hit_rate_ci_hi": 0.10616666666666667,
+          "eval_stale_rate_point": 0.0,
+          "eval_stale_rate_ci_lo": 0.0,
+          "eval_stale_rate_ci_hi": 0.0,
+          "eval_n_episodes": 40.0
+        },
+        {
+          "input": "episode_bootstrap_cells[2]",
+          "output": "{\"regime\": \"low_volatility\", \"policy_family\": \"fixed_ttl\", \"knob\": \"ttl=1\", \"hit_rate_point\": 0.16266666666666665, \"hit_rate_ci_lo\": 0.1465, \"hit_rate_ci_hi\": 0.17966666666666667, \"stale_rate_point\": ...",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "fixed_ttl",
+          "metadata_knob": "ttl=1",
+          "metadata_hit_rate_point": 0.16266666666666665,
+          "metadata_hit_rate_ci_lo": 0.1465,
+          "metadata_hit_rate_ci_hi": 0.17966666666666667,
+          "metadata_stale_rate_point": 0.0,
+          "metadata_stale_rate_ci_lo": 0.0,
+          "metadata_stale_rate_ci_hi": 0.0,
+          "metadata_n_episodes": 40,
+          "eval_hit_rate_point": 0.16266666666666665,
+          "eval_hit_rate_ci_lo": 0.1465,
+          "eval_hit_rate_ci_hi": 0.17966666666666667,
+          "eval_stale_rate_point": 0.0,
+          "eval_stale_rate_ci_lo": 0.0,
+          "eval_stale_rate_ci_hi": 0.0,
+          "eval_n_episodes": 40.0
+        }
+      ]
+    }
+  ]
+}

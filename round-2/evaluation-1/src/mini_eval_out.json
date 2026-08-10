@@ -1,0 +1,425 @@
+{
+  "metadata": {
+    "evaluation_name": "AIMD cache-policy experiment: episode-level bootstrap re-verification + schema-diff wiring-bug diagnosis + ecological-validity proxy",
+    "dependency_experiment": "art_qtEtMpLZuRGI",
+    "dependency_dataset": "art_T0onLH9xokqw",
+    "n_bootstrap_resamples": 10000,
+    "low_n_flag_threshold": 8,
+    "verdicts": {
+      "criterion_a": {
+        "criterion": "a_frontier_non_dominated",
+        "synthetic_run_verdict": "DISCONFIRMS",
+        "mean_non_dominated_fraction": 0.0,
+        "per_regime": {
+          "low_volatility": {
+            "fraction": 0.0,
+            "ci_lo": 0.0,
+            "ci_hi": 0.16666666666666663
+          },
+          "medium_volatility": {
+            "fraction": 0.0,
+            "ci_lo": 0.0,
+            "ci_hi": 0.0
+          },
+          "high_volatility": {
+            "fraction": 0.0,
+            "ci_lo": 0.0,
+            "ci_hi": 0.21041666666666475
+          }
+        },
+        "real_content_robustness_status": "UNRESOLVED_BLOCKED_ON_REEXECUTION",
+        "real_content_robustness_reason": "schema_diff confirms the dataset artifact was never loaded by method.py (dataset_artifact_ever_loaded_by_method_py=False); every number above is synthetic-simulator-only, so criterion (a)'s implicit claim of real-corpus robustness cannot be confirmed or disconfirmed from this artifact -- only the ecological-validity proxy above bears on plausibility, and it shows the fully-synthetic medium/high_volatility regimes (where AIMD's non-dominated fraction is highest) are MORE adversarial than the real corpus's actual static-dominated composition, i.e. the strongest synthetic evidence for criterion (a) comes from the regime LEAST representative of the real corpus."
+      },
+      "criterion_b": {
+        "criterion": "b_low_repeat_convergence_and_freshcache_failure",
+        "synthetic_run_verdict": "MIXED",
+        "per_regime": {
+          "low_volatility": {
+            "aimd_convergence_median": 12.0,
+            "baseline_convergence_medians": {
+              "d_ttl": 12.0,
+              "ewma_ttl": 7.0,
+              "freshcache": 5.0,
+              "freshcache_pooled": 5.0
+            },
+            "aimd_slower_than_baselines": true,
+            "freshcache_calibrated_fraction_wilson": {
+              "point": 0.3458333333333333,
+              "ci_lo": 0.28851201281500544,
+              "ci_hi": 0.4080122882066413,
+              "n": 240
+            }
+          },
+          "medium_volatility": {
+            "aimd_convergence_median": 12.0,
+            "baseline_convergence_medians": {
+              "d_ttl": 12.0,
+              "ewma_ttl": 8.0,
+              "freshcache": 5.0,
+              "freshcache_pooled": 5.0
+            },
+            "aimd_slower_than_baselines": true,
+            "freshcache_calibrated_fraction_wilson": {
+              "point": 0.3625,
+              "ci_lo": 0.30428862453168165,
+              "ci_hi": 0.4250438601633006,
+              "n": 240
+            }
+          },
+          "high_volatility": {
+            "aimd_convergence_median": 16.0,
+            "baseline_convergence_medians": {
+              "d_ttl": 11.0,
+              "ewma_ttl": 8.0,
+              "freshcache": 5.0,
+              "freshcache_pooled": 5.0
+            },
+            "aimd_slower_than_baselines": true,
+            "freshcache_calibrated_fraction_wilson": {
+              "point": 0.35,
+              "ci_lo": 0.2924488094298485,
+              "ci_hi": 0.4122775375101321,
+              "n": 240
+            }
+          }
+        },
+        "aimd_slower_in_n_of_3_regimes": 3,
+        "freshcache_calibration_failure_supported_in_n_of_3_regimes": 3,
+        "real_content_robustness_status": "UNRESOLVED_BLOCKED_ON_REEXECUTION",
+        "real_content_robustness_reason": "schema_diff confirms the dataset artifact was never loaded by method.py (dataset_artifact_ever_loaded_by_method_py=False); every number above is synthetic-simulator-only, so criterion (a)'s implicit claim of real-corpus robustness cannot be confirmed or disconfirmed from this artifact -- only the ecological-validity proxy above bears on plausibility, and it shows the fully-synthetic medium/high_volatility regimes (where AIMD's non-dominated fraction is highest) are MORE adversarial than the real corpus's actual static-dominated composition, i.e. the strongest synthetic evidence for criterion (a) comes from the regime LEAST representative of the real corpus."
+      },
+      "overall_mechanical_verdict": "MIXED_SYNTHETIC_ONLY_REAL_CONTENT_UNRESOLVED"
+    }
+  },
+  "metrics_agg": {
+    "n_cells_bootstrapped": 150,
+    "n_low_confidence_cells": 0,
+    "mean_aimd_non_dominated_fraction": 0.0,
+    "criterion_a_ci_excludes_zero_all_regimes": 0.0,
+    "aimd_slower_convergence_in_n_regimes": 3,
+    "freshcache_calibration_failure_regimes": 3,
+    "n_significance_tests_run": 27,
+    "n_significance_tests_holm_significant_p05": 17,
+    "dataset_wiring_bug_confirmed": 1.0,
+    "seed_reproducibility_bug_confirmed": 1.0,
+    "n_cells_mismatched_vs_original_stored_run": 60,
+    "real_corpus_n_resources": 329,
+    "real_corpus_static_fraction": 0.8480243161094225,
+    "real_corpus_bursty_fraction": 0.015197568389057751,
+    "runtime_seconds": 16.963132858276367
+  },
+  "datasets": [
+    {
+      "dataset": "schema_diff_report",
+      "examples": [
+        {
+          "input": "method.py vs full_data_out.json schema compatibility",
+          "output": "{\"dataset_row_fields_present\": [\"input\", \"metadata_checked\", \"metadata_content_now\", \"metadata_resource_class\", \"metadata_sim_days\", \"metadata_timing_provenance\", \"metadata_version_schedule\", \"metadata_volatility_regime\", \"output\"], \"method_py_consumed_call_fields\": [\"call_site_id\", \"timestamp\", \"true_version\"], \"field_compatibility_table\": [{\"method_py_field\": \"call_site_id\", \"dataset_equivalent_field\": \"input.resource_id (or input.call_site_signature for a richer many-to-one mapping)\", \"type_compatible\": true, \"note\": \"Directly renameable/compatible.\"}, {\"method_py_field\": \"timestamp\", \"dataset_equivalent_field\": \"input.timestamp_tick\", \"type_compatible\": true, \"note\": \"Directly renameable/compatible.\"}, {\"method_py_field\": \"true_version\", \"dataset_equivalent_field\": \"output (ground_truth_version_id, currently a string id, not an int index like method.py's true_version)\", \"type_compatible\": false, \"note\": \"INCOMPATIBLE: method.py's Resource.value_version_at() returns an integer schedule-index; the dataset's ground-truth output is a string version_id (e.g. 'snip_qqp_0109_v0') keyed against metadata_version_schedule. A real-content replay would need a small adapter mapping (resource_id, timestamp_tick) -> version_id via binary search over metadata_version_schedule's [valid_from_tick, valid_until_tick] intervals -- structurally straightforward but NOT implemented anywhere.\"}], \"source_string_grep\": {\"full_data_out\": false, \"mini_data_out\": false, \"load_dataset\": false, \"data_out.json\": false, \"art_T0onLH9xokqw\": false}, \"dataset_artifact_ever_loaded_by_method_py\": false, \"diagnosis\": \"CONFIRMED WIRING BUG, NOT A SCHEMA MISMATCH THAT BLOCKS REPLAY: grepping method.py's full source for any reference to the dataset artifact's output files (full_data_out.json / mini_data_out.json / the dataset artifact id) returns zero hits. The experiment's own docstring (method.py lines 6-10) states the dataset dependency's output was not present in the workspace at run time and falls back to a fully in-process Stage-1 Zipf simulator (build_resource_corpus + simulate_episode), so real-content data never entered the evaluated event log at all -- this is a dependency-wiring failure (the dataset was never even attempted to be read), not a downstream schema incompatibility discovered after loading. The one non-trivial schema gap that WOULD need resolving on a re-run (true_version: int index vs. string version_id) is documented above for exactly that future re-execution.\", \"fix_required_for_real_content_replay\": \"(1) method.py must actually open full_data_out.json/mini_data_out.json's dataset dependency output; (2) replace build_resource_corpus/simulate_episode with a loader that groups the 5307 rows by resource_id and episode_id (already present in `input`); (3) replace Resource.value_version_at(t) with a binary search over the parsed metadata_version_schedule intervals, returning the version_id string; (4) all four cache-policy classes are otherwise schedule-agnostic and would need no changes, since they operate on hashable (site, timestamp, true_version) tuples regardless of source.\"}",
+          "eval_dataset_artifact_ever_loaded_by_method_py": 0.0,
+          "eval_n_incompatible_fields": 1.0
+        }
+      ]
+    },
+    {
+      "dataset": "seed_reproducibility_finding",
+      "examples": [
+        {
+          "input": "cross-check of this re-derivation vs method_raw.json stored per_run_results",
+          "output": "{\"n_mismatched_cells\": 60, \"n_checked_cells\": 150, \"mismatched_policy_families\": [\"aimd\", \"freshcache\", \"freshcache_pooled\"], \"expected_mismatched_families_if_hash_seed_theory_correct\": [\"aimd\", \"freshcache\", \"freshcache_pooled\"], \"theory_confirmed\": true, \"root_cause\": \"method.py seeds each replay job with hash((regime,family,kidx)) % 2**31. Python's hash() of str/tuple objects is randomized per-process (PYTHONHASHSEED unset), so this seed is NOT reproducible across separate process invocations -- only families whose policy update rule is gated on the `checked` spot-check flag (freshcache, freshcache_pooled, aimd) are sensitive to it; fixed_ttl/d_ttl/ewma_ttl update unconditionally every call and are seed-invariant, hence match exactly.\", \"impact\": \"The self-reported point estimates in method_out.json for AIMD/FreshCache/FreshCachePooled are ONE unreproducible realization of the spot-check process, not a deterministic function of the documented config -- this is exactly why this evaluation's episode-level bootstrap CIs (computed on THIS run's reproducible replay, with PYTHONHASHSEED fixed below for internal consistency) are the right instrument: they quantify uncertainty a fresh point-estimate rerun would already reveal via disagreement with the original numbers.\", \"fix_recommended\": \"method.py should thread an explicit int seed through its job list instead of hash() on a tuple containing strings, or set PYTHONHASHSEED at process start.\"}",
+          "eval_n_mismatched_cells": 60.0,
+          "eval_n_checked_cells": 150.0,
+          "eval_theory_confirmed": 1.0
+        }
+      ]
+    },
+    {
+      "dataset": "episode_bootstrap_cells",
+      "examples": [
+        {
+          "input": "episode_bootstrap_cells[0]",
+          "output": "{\"regime\": \"low_volatility\", \"policy_family\": \"fixed_ttl\", \"knob\": \"ttl=0.0\", \"hit_rate_point\": 0.0, \"hit_rate_ci_lo\": 0.0, \"hit_rate_ci_hi\": 0.0, \"stale_rate_point\": null, \"stale_rate_ci_lo\": null, \"stale_rate_ci_hi\": null, \"n_episodes\": 40}",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "fixed_ttl",
+          "metadata_knob": "ttl=0.0",
+          "metadata_hit_rate_point": 0.0,
+          "metadata_hit_rate_ci_lo": 0.0,
+          "metadata_hit_rate_ci_hi": 0.0,
+          "metadata_stale_rate_point": null,
+          "metadata_stale_rate_ci_lo": null,
+          "metadata_stale_rate_ci_hi": null,
+          "metadata_n_episodes": 40,
+          "eval_hit_rate_point": 0.0,
+          "eval_hit_rate_ci_lo": 0.0,
+          "eval_hit_rate_ci_hi": 0.0,
+          "eval_n_episodes": 40.0
+        },
+        {
+          "input": "episode_bootstrap_cells[1]",
+          "output": "{\"regime\": \"low_volatility\", \"policy_family\": \"fixed_ttl\", \"knob\": \"ttl=0.5\", \"hit_rate_point\": 0.09383333333333334, \"hit_rate_ci_lo\": 0.0815, \"hit_rate_ci_hi\": 0.10616666666666667, \"stale_rate_point\": 0.0, \"stale_rate_ci_lo\": 0.0, \"stale_rate_ci_hi\": 0.0, \"n_episodes\": 40}",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "fixed_ttl",
+          "metadata_knob": "ttl=0.5",
+          "metadata_hit_rate_point": 0.09383333333333334,
+          "metadata_hit_rate_ci_lo": 0.0815,
+          "metadata_hit_rate_ci_hi": 0.10616666666666667,
+          "metadata_stale_rate_point": 0.0,
+          "metadata_stale_rate_ci_lo": 0.0,
+          "metadata_stale_rate_ci_hi": 0.0,
+          "metadata_n_episodes": 40,
+          "eval_hit_rate_point": 0.09383333333333334,
+          "eval_hit_rate_ci_lo": 0.0815,
+          "eval_hit_rate_ci_hi": 0.10616666666666667,
+          "eval_stale_rate_point": 0.0,
+          "eval_stale_rate_ci_lo": 0.0,
+          "eval_stale_rate_ci_hi": 0.0,
+          "eval_n_episodes": 40.0
+        },
+        {
+          "input": "episode_bootstrap_cells[2]",
+          "output": "{\"regime\": \"low_volatility\", \"policy_family\": \"fixed_ttl\", \"knob\": \"ttl=1\", \"hit_rate_point\": 0.16266666666666665, \"hit_rate_ci_lo\": 0.1465, \"hit_rate_ci_hi\": 0.17966666666666667, \"stale_rate_point\": 0.0, \"stale_rate_ci_lo\": 0.0, \"stale_rate_ci_hi\": 0.0, \"n_episodes\": 40}",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "fixed_ttl",
+          "metadata_knob": "ttl=1",
+          "metadata_hit_rate_point": 0.16266666666666665,
+          "metadata_hit_rate_ci_lo": 0.1465,
+          "metadata_hit_rate_ci_hi": 0.17966666666666667,
+          "metadata_stale_rate_point": 0.0,
+          "metadata_stale_rate_ci_lo": 0.0,
+          "metadata_stale_rate_ci_hi": 0.0,
+          "metadata_n_episodes": 40,
+          "eval_hit_rate_point": 0.16266666666666665,
+          "eval_hit_rate_ci_lo": 0.1465,
+          "eval_hit_rate_ci_hi": 0.17966666666666667,
+          "eval_stale_rate_point": 0.0,
+          "eval_stale_rate_ci_lo": 0.0,
+          "eval_stale_rate_ci_hi": 0.0,
+          "eval_n_episodes": 40.0
+        }
+      ]
+    },
+    {
+      "dataset": "frontier_auc_dominance",
+      "examples": [
+        {
+          "input": "frontier_auc_dominance[0]",
+          "output": "{\"regime\": \"low_volatility\", \"policy_family\": \"fixed_ttl\", \"auc_common_range\": null, \"x_lo\": 0.5498333333333333, \"x_hi\": 0.04583333333333333, \"aimd_non_dominated_fraction_vs_this_baseline\": 0.5}",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "fixed_ttl",
+          "metadata_auc_common_range": null,
+          "metadata_x_lo": 0.5498333333333333,
+          "metadata_x_hi": 0.04583333333333333,
+          "metadata_aimd_non_dominated_fraction_vs_this_baseline": 0.5,
+          "eval_x_lo": 0.5498333333333333,
+          "eval_x_hi": 0.04583333333333333,
+          "eval_aimd_non_dominated_fraction_vs_this_baseline": 0.5
+        },
+        {
+          "input": "frontier_auc_dominance[1]",
+          "output": "{\"regime\": \"low_volatility\", \"policy_family\": \"d_ttl\", \"auc_common_range\": null, \"x_lo\": 0.5498333333333333, \"x_hi\": 0.04583333333333333, \"aimd_non_dominated_fraction_vs_this_baseline\": 1.0}",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_auc_common_range": null,
+          "metadata_x_lo": 0.5498333333333333,
+          "metadata_x_hi": 0.04583333333333333,
+          "metadata_aimd_non_dominated_fraction_vs_this_baseline": 1.0,
+          "eval_x_lo": 0.5498333333333333,
+          "eval_x_hi": 0.04583333333333333,
+          "eval_aimd_non_dominated_fraction_vs_this_baseline": 1.0
+        },
+        {
+          "input": "frontier_auc_dominance[2]",
+          "output": "{\"regime\": \"low_volatility\", \"policy_family\": \"ewma_ttl\", \"auc_common_range\": null, \"x_lo\": 0.5498333333333333, \"x_hi\": 0.04583333333333333, \"aimd_non_dominated_fraction_vs_this_baseline\": 0.41666666666666663}",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "ewma_ttl",
+          "metadata_auc_common_range": null,
+          "metadata_x_lo": 0.5498333333333333,
+          "metadata_x_hi": 0.04583333333333333,
+          "metadata_aimd_non_dominated_fraction_vs_this_baseline": 0.41666666666666663,
+          "eval_x_lo": 0.5498333333333333,
+          "eval_x_hi": 0.04583333333333333,
+          "eval_aimd_non_dominated_fraction_vs_this_baseline": 0.41666666666666663
+        }
+      ]
+    },
+    {
+      "dataset": "convergence_event_ci",
+      "examples": [
+        {
+          "input": "convergence_event_ci[0]",
+          "output": "{\"regime\": \"low_volatility\", \"policy_family\": \"fixed_ttl\", \"median\": null, \"p10\": null, \"p90\": null, \"ci_lo\": null, \"ci_hi\": null, \"n\": 0, \"low_n_flag\": true}",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "fixed_ttl",
+          "metadata_median": null,
+          "metadata_p10": null,
+          "metadata_p90": null,
+          "metadata_ci_lo": null,
+          "metadata_ci_hi": null,
+          "metadata_n": 0,
+          "metadata_low_n_flag": true,
+          "eval_n": 0.0
+        },
+        {
+          "input": "convergence_event_ci[1]",
+          "output": "{\"regime\": \"low_volatility\", \"policy_family\": \"d_ttl\", \"median\": 12.0, \"p10\": 9.0, \"p90\": 46.0, \"ci_lo\": 11.0, \"ci_hi\": 12.0, \"n\": 851, \"low_n_flag\": false}",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_median": 12.0,
+          "metadata_p10": 9.0,
+          "metadata_p90": 46.0,
+          "metadata_ci_lo": 11.0,
+          "metadata_ci_hi": 12.0,
+          "metadata_n": 851,
+          "metadata_low_n_flag": false,
+          "eval_median": 12.0,
+          "eval_p10": 9.0,
+          "eval_p90": 46.0,
+          "eval_ci_lo": 11.0,
+          "eval_ci_hi": 12.0,
+          "eval_n": 851.0
+        },
+        {
+          "input": "convergence_event_ci[2]",
+          "output": "{\"regime\": \"low_volatility\", \"policy_family\": \"ewma_ttl\", \"median\": 7.0, \"p10\": 1.0, \"p90\": 27.30000000000001, \"ci_lo\": 5.0, \"ci_hi\": 9.0, \"n\": 328, \"low_n_flag\": false}",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "ewma_ttl",
+          "metadata_median": 7.0,
+          "metadata_p10": 1.0,
+          "metadata_p90": 27.30000000000001,
+          "metadata_ci_lo": 5.0,
+          "metadata_ci_hi": 9.0,
+          "metadata_n": 328,
+          "metadata_low_n_flag": false,
+          "eval_median": 7.0,
+          "eval_p10": 1.0,
+          "eval_p90": 27.30000000000001,
+          "eval_ci_lo": 5.0,
+          "eval_ci_hi": 9.0,
+          "eval_n": 328.0
+        }
+      ]
+    },
+    {
+      "dataset": "significance_tests_holm_corrected",
+      "examples": [
+        {
+          "input": "significance_tests_holm_corrected[0]",
+          "output": "{\"regime\": \"low_volatility\", \"comparison\": \"frontier_auc_per_episode\", \"aimd_vs\": \"fixed_ttl\", \"baseline\": \"fixed_ttl\", \"method\": \"wilcoxon\", \"n\": 40, \"p_value\": 1.8189894035458565e-12, \"diff_median\": 0.059552985276987214, \"p_value_holm\": 9.094947017729282e-12}",
+          "metadata_regime": "low_volatility",
+          "metadata_comparison": "frontier_auc_per_episode",
+          "metadata_aimd_vs": "fixed_ttl",
+          "metadata_baseline": "fixed_ttl",
+          "metadata_method": "wilcoxon",
+          "metadata_n": 40,
+          "metadata_p_value": 1.8189894035458565e-12,
+          "metadata_diff_median": 0.059552985276987214,
+          "metadata_p_value_holm": 9.094947017729282e-12,
+          "eval_n": 40.0,
+          "eval_p_value": 1.8189894035458565e-12,
+          "eval_diff_median": 0.059552985276987214,
+          "eval_p_value_holm": 9.094947017729282e-12
+        },
+        {
+          "input": "significance_tests_holm_corrected[1]",
+          "output": "{\"regime\": \"low_volatility\", \"comparison\": \"frontier_auc_per_episode\", \"aimd_vs\": \"d_ttl\", \"baseline\": \"d_ttl\", \"method\": \"wilcoxon\", \"n\": 40, \"p_value\": 0.7869371467657944, \"diff_median\": -1.1102230246251565e-16, \"p_value_holm\": 1.0}",
+          "metadata_regime": "low_volatility",
+          "metadata_comparison": "frontier_auc_per_episode",
+          "metadata_aimd_vs": "d_ttl",
+          "metadata_baseline": "d_ttl",
+          "metadata_method": "wilcoxon",
+          "metadata_n": 40,
+          "metadata_p_value": 0.7869371467657944,
+          "metadata_diff_median": -1.1102230246251565e-16,
+          "metadata_p_value_holm": 1.0,
+          "eval_n": 40.0,
+          "eval_p_value": 0.7869371467657944,
+          "eval_diff_median": -1.1102230246251565e-16,
+          "eval_p_value_holm": 1.0
+        },
+        {
+          "input": "significance_tests_holm_corrected[2]",
+          "output": "{\"regime\": \"low_volatility\", \"comparison\": \"frontier_auc_per_episode\", \"aimd_vs\": \"ewma_ttl\", \"baseline\": \"ewma_ttl\", \"method\": \"wilcoxon\", \"n\": 40, \"p_value\": 0.8774027283940786, \"diff_median\": 0.0, \"p_value_holm\": 1.0}",
+          "metadata_regime": "low_volatility",
+          "metadata_comparison": "frontier_auc_per_episode",
+          "metadata_aimd_vs": "ewma_ttl",
+          "metadata_baseline": "ewma_ttl",
+          "metadata_method": "wilcoxon",
+          "metadata_n": 40,
+          "metadata_p_value": 0.8774027283940786,
+          "metadata_diff_median": 0.0,
+          "metadata_p_value_holm": 1.0,
+          "eval_n": 40.0,
+          "eval_p_value": 0.8774027283940786,
+          "eval_diff_median": 0.0,
+          "eval_p_value_holm": 1.0
+        }
+      ]
+    },
+    {
+      "dataset": "ecological_validity_proxy",
+      "examples": [
+        {
+          "input": "synthetic simulator params vs real-corpus version_schedule/revisit stats",
+          "output": "{\"real_corpus_static_periodic_bursty_fractions\": {\"static\": 0.8480243161094225, \"periodic\": 0.13677811550151975, \"bursty\": 0.015197568389057751}, \"real_corpus_n_resources\": 329, \"real_corpus_revisit_count_per_episode_mean\": 5.510903426791277, \"real_corpus_revisit_count_per_episode_median\": 5.0, \"synthetic_repeat_bias_param\": 0.65, \"real_change_rate_per_day_by_regime\": {\"static\": {\"mean\": 0.0, \"median\": 0.0, \"n\": 279}, \"periodic\": {\"mean\": 0.16370370370370374, \"median\": 0.16666666666666666, \"n\": 45}, \"bursty\": {\"mean\": 0.9666666666666666, \"median\": 0.9666666666666667, \"n\": 5}}, \"per_regime_comparison\": [{\"regime\": \"low_volatility\", \"synthetic_p_static\": 0.7, \"synthetic_p_bursty\": 0.1, \"real_corpus_p_static_overall_note\": 0.8480243161094225, \"real_corpus_p_bursty_overall_note\": 0.015197568389057751, \"in_range_note\": \"The real corpus's OWN volatility_regime labels are static/periodic/bursty PER RESOURCE (not per simulated regime scenario), so this is a proxy, not a literal parameter match: the real corpus is dominated by static content (84.8% of 329 distinct resources) with very few genuinely bursty resources (1.5%, n=5), which sits INSIDE the synthetic low_volatility regime's p_static=0.70 but OUTSIDE medium/high_volatility's p_static<=0.35 -- i.e. only the low_volatility synthetic regime is ecologically representative of this real corpus's actual static/bursty mix; medium and high_volatility are deliberately more adversarial than anything the real corpus contains.\"}, {\"regime\": \"medium_volatility\", \"synthetic_p_static\": 0.35, \"synthetic_p_bursty\": 0.3, \"real_corpus_p_static_overall_note\": 0.8480243161094225, \"real_corpus_p_bursty_overall_note\": 0.015197568389057751, \"in_range_note\": \"The real corpus's OWN volatility_regime labels are static/periodic/bursty PER RESOURCE (not per simulated regime scenario), so this is a proxy, not a literal parameter match: the real corpus is dominated by static content (84.8% of 329 distinct resources) with very few genuinely bursty resources (1.5%, n=5), which sits INSIDE the synthetic low_volatility regime's p_static=0.70 but OUTSIDE medium/high_volatility's p_static<=0.35 -- i.e. only the low_volatility synthetic regime is ecologically representative of this real corpus's actual static/bursty mix; medium and high_volatility are deliberately more adversarial than anything the real corpus contains.\"}, {\"regime\": \"high_volatility\", \"synthetic_p_static\": 0.1, \"synthetic_p_bursty\": 0.6, \"real_corpus_p_static_overall_note\": 0.8480243161094225, \"real_corpus_p_bursty_overall_note\": 0.015197568389057751, \"in_range_note\": \"The real corpus's OWN volatility_regime labels are static/periodic/bursty PER RESOURCE (not per simulated regime scenario), so this is a proxy, not a literal parameter match: the real corpus is dominated by static content (84.8% of 329 distinct resources) with very few genuinely bursty resources (1.5%, n=5), which sits INSIDE the synthetic low_volatility regime's p_static=0.70 but OUTSIDE medium/high_volatility's p_static<=0.35 -- i.e. only the low_volatility synthetic regime is ecologically representative of this real corpus's actual static/bursty mix; medium and high_volatility are deliberately more adversarial than anything the real corpus contains.\"}], \"revisit_cadence_comparison\": \"Real corpus median revisits/resource/episode = 5.0 (mean 5.51), driven by the dataset's documented read-then-reread (4-10x), search-then-refine (3-6x), and compute-then-reuse (3-6x) templates. The synthetic simulator's repeat_bias=0.65 Zipf-skew parameter is not directly unit-comparable (it's a per-call revisit PROBABILITY, not a per-episode revisit COUNT), but produces a comparable qualitative skew: both give a small number of hot sites most calls concentrate on, which is the property cache policies actually exploit.\"}",
+          "eval_real_corpus_n_resources": 329.0,
+          "eval_real_corpus_revisit_count_per_episode_mean": 5.510903426791277,
+          "eval_real_corpus_static_fraction": 0.8480243161094225
+        }
+      ]
+    },
+    {
+      "dataset": "sample_size_audit",
+      "examples": [
+        {
+          "input": "sample_size_audit[0]",
+          "output": "{\"regime\": \"low_volatility\", \"family\": \"fixed_ttl\", \"knob\": \"ttl=0.0\", \"n_episodes\": 40, \"low_confidence\": false}",
+          "metadata_regime": "low_volatility",
+          "metadata_family": "fixed_ttl",
+          "metadata_knob": "ttl=0.0",
+          "metadata_n_episodes": 40,
+          "metadata_low_confidence": false,
+          "eval_n_episodes": 40.0
+        },
+        {
+          "input": "sample_size_audit[1]",
+          "output": "{\"regime\": \"low_volatility\", \"family\": \"fixed_ttl\", \"knob\": \"ttl=0.5\", \"n_episodes\": 40, \"low_confidence\": false}",
+          "metadata_regime": "low_volatility",
+          "metadata_family": "fixed_ttl",
+          "metadata_knob": "ttl=0.5",
+          "metadata_n_episodes": 40,
+          "metadata_low_confidence": false,
+          "eval_n_episodes": 40.0
+        },
+        {
+          "input": "sample_size_audit[2]",
+          "output": "{\"regime\": \"low_volatility\", \"family\": \"fixed_ttl\", \"knob\": \"ttl=1\", \"n_episodes\": 40, \"low_confidence\": false}",
+          "metadata_regime": "low_volatility",
+          "metadata_family": "fixed_ttl",
+          "metadata_knob": "ttl=1",
+          "metadata_n_episodes": 40,
+          "metadata_low_confidence": false,
+          "eval_n_episodes": 40.0
+        }
+      ]
+    },
+    {
+      "dataset": "final_verdicts",
+      "examples": [
+        {
+          "input": "criterion_a_frontier_non_dominated",
+          "output": "{\"criterion\": \"a_frontier_non_dominated\", \"synthetic_run_verdict\": \"DISCONFIRMS\", \"mean_non_dominated_fraction\": 0.0, \"per_regime\": {\"low_volatility\": {\"fraction\": 0.0, \"ci_lo\": 0.0, \"ci_hi\": 0.16666666666666663}, \"medium_volatility\": {\"fraction\": 0.0, \"ci_lo\": 0.0, \"ci_hi\": 0.0}, \"high_volatility\": {\"fraction\": 0.0, \"ci_lo\": 0.0, \"ci_hi\": 0.21041666666666475}}, \"real_content_robustness_status\": \"UNRESOLVED_BLOCKED_ON_REEXECUTION\", \"real_content_robustness_reason\": \"schema_diff confirms the dataset artifact was never loaded by method.py (dataset_artifact_ever_loaded_by_method_py=False); every number above is synthetic-simulator-only, so criterion (a)'s implicit claim of real-corpus robustness cannot be confirmed or disconfirmed from this artifact -- only the ecological-validity proxy above bears on plausibility, and it shows the fully-synthetic medium/high_volatility regimes (where AIMD's non-dominated fraction is highest) are MORE adversarial than the real corpus's actual static-dominated composition, i.e. the strongest synthetic evidence for criterion (a) comes from the regime LEAST representative of the real corpus.\"}",
+          "eval_mean_non_dominated_fraction": 0.0
+        },
+        {
+          "input": "criterion_b_low_repeat_convergence",
+          "output": "{\"criterion\": \"b_low_repeat_convergence_and_freshcache_failure\", \"synthetic_run_verdict\": \"MIXED\", \"per_regime\": {\"low_volatility\": {\"aimd_convergence_median\": 12.0, \"baseline_convergence_medians\": {\"d_ttl\": 12.0, \"ewma_ttl\": 7.0, \"freshcache\": 5.0, \"freshcache_pooled\": 5.0}, \"aimd_slower_than_baselines\": true, \"freshcache_calibrated_fraction_wilson\": {\"point\": 0.3458333333333333, \"ci_lo\": 0.28851201281500544, \"ci_hi\": 0.4080122882066413, \"n\": 240}}, \"medium_volatility\": {\"aimd_convergence_median\": 12.0, \"baseline_convergence_medians\": {\"d_ttl\": 12.0, \"ewma_ttl\": 8.0, \"freshcache\": 5.0, \"freshcache_pooled\": 5.0}, \"aimd_slower_than_baselines\": true, \"freshcache_calibrated_fraction_wilson\": {\"point\": 0.3625, \"ci_lo\": 0.30428862453168165, \"ci_hi\": 0.4250438601633006, \"n\": 240}}, \"high_volatility\": {\"aimd_convergence_median\": 16.0, \"baseline_convergence_medians\": {\"d_ttl\": 11.0, \"ewma_ttl\": 8.0, \"freshcache\": 5.0, \"freshcache_pooled\": 5.0}, \"aimd_slower_than_baselines\": true, \"freshcache_calibrated_fraction_wilson\": {\"point\": 0.35, \"ci_lo\": 0.2924488094298485, \"ci_hi\": 0.4122775375101321, \"n\": 240}}}, \"aimd_slower_in_n_of_3_regimes\": 3, \"freshcache_calibration_failure_supported_in_n_of_3_regimes\": 3, \"real_content_robustness_status\": \"UNRESOLVED_BLOCKED_ON_REEXECUTION\", \"real_content_robustness_reason\": \"schema_diff confirms the dataset artifact was never loaded by method.py (dataset_artifact_ever_loaded_by_method_py=False); every number above is synthetic-simulator-only, so criterion (a)'s implicit claim of real-corpus robustness cannot be confirmed or disconfirmed from this artifact -- only the ecological-validity proxy above bears on plausibility, and it shows the fully-synthetic medium/high_volatility regimes (where AIMD's non-dominated fraction is highest) are MORE adversarial than the real corpus's actual static-dominated composition, i.e. the strongest synthetic evidence for criterion (a) comes from the regime LEAST representative of the real corpus.\"}",
+          "eval_aimd_slower_in_n_of_3_regimes": 3.0
+        },
+        {
+          "input": "overall",
+          "output": "{\"criterion_a\": {\"criterion\": \"a_frontier_non_dominated\", \"synthetic_run_verdict\": \"DISCONFIRMS\", \"mean_non_dominated_fraction\": 0.0, \"per_regime\": {\"low_volatility\": {\"fraction\": 0.0, \"ci_lo\": 0.0, \"ci_hi\": 0.16666666666666663}, \"medium_volatility\": {\"fraction\": 0.0, \"ci_lo\": 0.0, \"ci_hi\": 0.0}, \"high_volatility\": {\"fraction\": 0.0, \"ci_lo\": 0.0, \"ci_hi\": 0.21041666666666475}}, \"real_content_robustness_status\": \"UNRESOLVED_BLOCKED_ON_REEXECUTION\", \"real_content_robustness_reason\": \"schema_diff confirms the dataset artifact was never loaded by method.py (dataset_artifact_ever_loaded_by_method_py=False); every number above is synthetic-simulator-only, so criterion (a)'s implicit claim of real-corpus robustness cannot be confirmed or disconfirmed from this artifact -- only the ecological-validity proxy above bears on plausibility, and it shows the fully-synthetic medium/high_volatility regimes (where AIMD's non-dominated fraction is highest) are MORE adversarial than the real corpus's actual static-dominated composition, i.e. the strongest synthetic evidence for criterion (a) comes from the regime LEAST representative of the real corpus.\"}, \"criterion_b\": {\"criterion\": \"b_low_repeat_convergence_and_freshcache_failure\", \"synthetic_run_verdict\": \"MIXED\", \"per_regime\": {\"low_volatility\": {\"aimd_convergence_median\": 12.0, \"baseline_convergence_medians\": {\"d_ttl\": 12.0, \"ewma_ttl\": 7.0, \"freshcache\": 5.0, \"freshcache_pooled\": 5.0}, \"aimd_slower_than_baselines\": true, \"freshcache_calibrated_fraction_wilson\": {\"point\": 0.3458333333333333, \"ci_lo\": 0.28851201281500544, \"ci_hi\": 0.4080122882066413, \"n\": 240}}, \"medium_volatility\": {\"aimd_convergence_median\": 12.0, \"baseline_convergence_medians\": {\"d_ttl\": 12.0, \"ewma_ttl\": 8.0, \"freshcache\": 5.0, \"freshcache_pooled\": 5.0}, \"aimd_slower_than_baselines\": true, \"freshcache_calibrated_fraction_wilson\": {\"point\": 0.3625, \"ci_lo\": 0.30428862453168165, \"ci_hi\": 0.4250438601633006, \"n\": 240}}, \"high_volatility\": {\"aimd_convergence_median\": 16.0, \"baseline_convergence_medians\": {\"d_ttl\": 11.0, \"ewma_ttl\": 8.0, \"freshcache\": 5.0, \"freshcache_pooled\": 5.0}, \"aimd_slower_than_baselines\": true, \"freshcache_calibrated_fraction_wilson\": {\"point\": 0.35, \"ci_lo\": 0.2924488094298485, \"ci_hi\": 0.4122775375101321, \"n\": 240}}}, \"aimd_slower_in_n_of_3_regimes\": 3, \"freshcache_calibration_failure_supported_in_n_of_3_regimes\": 3, \"real_content_robustness_status\": \"UNRESOLVED_BLOCKED_ON_REEXECUTION\", \"real_content_robustness_reason\": \"schema_diff confirms the dataset artifact was never loaded by method.py (dataset_artifact_ever_loaded_by_method_py=False); every number above is synthetic-simulator-only, so criterion (a)'s implicit claim of real-corpus robustness cannot be confirmed or disconfirmed from this artifact -- only the ecological-validity proxy above bears on plausibility, and it shows the fully-synthetic medium/high_volatility regimes (where AIMD's non-dominated fraction is highest) are MORE adversarial than the real corpus's actual static-dominated composition, i.e. the strongest synthetic evidence for criterion (a) comes from the regime LEAST representative of the real corpus.\"}, \"overall_mechanical_verdict\": \"MIXED_SYNTHETIC_ONLY_REAL_CONTENT_UNRESOLVED\"}",
+          "eval_criteria_resolved": 0.0
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,4498 @@
+{
+  "metadata": {
+    "method_name": "AIMD reuse-window caching vs TTL/d-TTL/FreshCache baselines for agent tool calls",
+    "description": "Simulated agent tool-call loop over a versioned, volatility-labeled resource corpus, replayed through four cache policies (fixed TTL, d-TTL stochastic-approximation, FreshCache fitted staleness gate [+ pooled variant], and the proposed AIMD reuse-window rule) across volatility regimes and knob grids. No LLM calls used; traces generated in-process (Stage 1 simulator) since no pre-simulated dataset artifact was available.",
+    "verdict": "MIXED",
+    "verdict_criteria": {
+      "criterion_a_frontier_non_dominated": "True",
+      "criterion_b_low_repeat_convergence_and_freshcache_failure": false
+    },
+    "config": {
+      "n_resources": 60,
+      "n_episodes_per_regime": 40,
+      "n_calls_per_episode": 150,
+      "episode_horizon": 120.0,
+      "repeat_bias": 0.65,
+      "spot_check_rate": 0.2,
+      "regimes": [
+        "low_volatility",
+        "medium_volatility",
+        "high_volatility"
+      ],
+      "regime_configs": {
+        "low_volatility": {
+          "p_static": 0.7,
+          "p_periodic": 0.2,
+          "p_bursty": 0.1,
+          "bursty_rate": 0.02,
+          "period_range": [
+            20.0,
+            60.0
+          ]
+        },
+        "medium_volatility": {
+          "p_static": 0.35,
+          "p_periodic": 0.35,
+          "p_bursty": 0.3,
+          "bursty_rate": 0.08,
+          "period_range": [
+            5.0,
+            20.0
+          ]
+        },
+        "high_volatility": {
+          "p_static": 0.1,
+          "p_periodic": 0.3,
+          "p_bursty": 0.6,
+          "bursty_rate": 0.3,
+          "period_range": [
+            1.0,
+            5.0
+          ]
+        }
+      },
+      "fixed_ttl_grid": [
+        0.0,
+        0.5,
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        1000000.0
+      ],
+      "dttl_grid": [
+        [
+          0.5,
+          0.5
+        ],
+        [
+          0.5,
+          1.0
+        ],
+        [
+          0.5,
+          2.0
+        ],
+        [
+          0.6,
+          0.5
+        ],
+        [
+          0.6,
+          1.0
+        ],
+        [
+          0.6,
+          2.0
+        ],
+        [
+          0.7,
+          0.5
+        ],
+        [
+          0.7,
+          1.0
+        ],
+        [
+          0.7,
+          2.0
+        ],
+        [
+          0.8,
+          0.5
+        ],
+        [
+          0.8,
+          1.0
+        ],
+        [
+          0.8,
+          2.0
+        ],
+        [
+          0.9,
+          0.5
+        ],
+        [
+          0.9,
+          1.0
+        ],
+        [
+          0.9,
+          2.0
+        ]
+      ],
+      "ewma_grid": [
+        [
+          0.5,
+          0.1
+        ],
+        [
+          0.5,
+          0.2
+        ],
+        [
+          0.7,
+          0.1
+        ],
+        [
+          0.7,
+          0.2
+        ],
+        [
+          0.9,
+          0.1
+        ],
+        [
+          0.9,
+          0.2
+        ]
+      ],
+      "freshcache_grid": [
+        0.05,
+        0.1,
+        0.2,
+        0.35
+      ],
+      "aimd_grid": [
+        [
+          0.25,
+          0.3
+        ],
+        [
+          0.25,
+          0.5
+        ],
+        [
+          0.25,
+          0.7
+        ],
+        [
+          0.5,
+          0.3
+        ],
+        [
+          0.5,
+          0.5
+        ],
+        [
+          0.5,
+          0.7
+        ],
+        [
+          1.0,
+          0.3
+        ],
+        [
+          1.0,
+          0.5
+        ],
+        [
+          1.0,
+          0.7
+        ],
+        [
+          2.0,
+          0.3
+        ],
+        [
+          2.0,
+          0.5
+        ],
+        [
+          2.0,
+          0.7
+        ]
+      ],
+      "seeds": "regime rng seed = 1000 + regime_index; per-job seed = hash((regime, family, knob_index)) % 2**31",
+      "mini_mode": false
+    },
+    "frontiers": {
+      "low_volatility": {
+        "fixed_ttl": [
+          {
+            "hit_rate": 0.16266666666666665,
+            "stale_rate": 0.0,
+            "knob": {
+              "ttl": 1
+            }
+          },
+          {
+            "hit_rate": 0.2585,
+            "stale_rate": 0.007736943907156673,
+            "knob": {
+              "ttl": 2
+            }
+          },
+          {
+            "hit_rate": 0.367,
+            "stale_rate": 0.01589464123524069,
+            "knob": {
+              "ttl": 4
+            }
+          },
+          {
+            "hit_rate": 0.48583333333333334,
+            "stale_rate": 0.03053173241852487,
+            "knob": {
+              "ttl": 8
+            }
+          },
+          {
+            "hit_rate": 0.6056666666666667,
+            "stale_rate": 0.07072096862960925,
+            "knob": {
+              "ttl": 16
+            }
+          },
+          {
+            "hit_rate": 0.7098333333333333,
+            "stale_rate": 0.13829537450105658,
+            "knob": {
+              "ttl": 32
+            }
+          },
+          {
+            "hit_rate": 0.99,
+            "stale_rate": 0.3202020202020202,
+            "knob": {
+              "ttl": 1000000.0
+            }
+          }
+        ],
+        "d_ttl": [
+          {
+            "hit_rate": 0.04583333333333333,
+            "stale_rate": 0.0,
+            "knob": {
+              "h_target": 0.5,
+              "c": 0.5
+            }
+          }
+        ],
+        "ewma_ttl": [
+          {
+            "hit_rate": 0.2693333333333333,
+            "stale_rate": 0.009900990099009901,
+            "knob": {
+              "h_target": 0.5,
+              "step": 0.1
+            }
+          },
+          {
+            "hit_rate": 0.3075,
+            "stale_rate": 0.01084010840108401,
+            "knob": {
+              "h_target": 0.5,
+              "step": 0.2
+            }
+          },
+          {
+            "hit_rate": 0.3238333333333333,
+            "stale_rate": 0.013381369016984045,
+            "knob": {
+              "h_target": 0.7,
+              "step": 0.1
+            }
+          },
+          {
+            "hit_rate": 0.36883333333333335,
+            "stale_rate": 0.019430637144148215,
+            "knob": {
+              "h_target": 0.9,
+              "step": 0.1
+            }
+          },
+          {
+            "hit_rate": 0.38366666666666666,
+            "stale_rate": 0.021720243266724587,
+            "knob": {
+              "h_target": 0.7,
+              "step": 0.2
+            }
+          },
+          {
+            "hit_rate": 0.4355,
+            "stale_rate": 0.029850746268656716,
+            "knob": {
+              "h_target": 0.9,
+              "step": 0.2
+            }
+          }
+        ],
+        "freshcache": [
+          {
+            "hit_rate": 0.15583333333333332,
+            "stale_rate": 0.0010695187165775401,
+            "knob": {
+              "error_budget": 0.05
+            }
+          },
+          {
+            "hit_rate": 0.2851666666666667,
+            "stale_rate": 0.025131502045587374,
+            "knob": {
+              "error_budget": 0.1
+            }
+          },
+          {
+            "hit_rate": 0.43083333333333335,
+            "stale_rate": 0.03868471953578337,
+            "knob": {
+              "error_budget": 0.2
+            }
+          },
+          {
+            "hit_rate": 0.5278333333333334,
+            "stale_rate": 0.04546889801073571,
+            "knob": {
+              "error_budget": 0.35
+            }
+          }
+        ],
+        "aimd": [
+          {
+            "hit_rate": 0.2515,
+            "stale_rate": 0.0066269052352551355,
+            "knob": {
+              "a": 0.25,
+              "b": 0.5,
+              "presumed_valid_weight": 0.0
+            }
+          },
+          {
+            "hit_rate": 0.2911666666666667,
+            "stale_rate": 0.009158557527189467,
+            "knob": {
+              "a": 0.5,
+              "b": 0.5,
+              "presumed_valid_weight": 0.0
+            }
+          },
+          {
+            "hit_rate": 0.2965,
+            "stale_rate": 0.013490725126475547,
+            "knob": {
+              "a": 0.5,
+              "b": 0.7,
+              "presumed_valid_weight": 0.0
+            }
+          },
+          {
+            "hit_rate": 0.3506666666666667,
+            "stale_rate": 0.019486692015209126,
+            "knob": {
+              "a": 1.0,
+              "b": 0.3,
+              "presumed_valid_weight": 0.0
+            }
+          },
+          {
+            "hit_rate": 0.414,
+            "stale_rate": 0.0249597423510467,
+            "knob": {
+              "a": 2.0,
+              "b": 0.3,
+              "presumed_valid_weight": 0.0
+            }
+          },
+          {
+            "hit_rate": 0.43333333333333335,
+            "stale_rate": 0.03230769230769231,
+            "knob": {
+              "a": 2.0,
+              "b": 0.5,
+              "presumed_valid_weight": 0.0
+            }
+          }
+        ],
+        "freshcache_pooled": [
+          {
+            "hit_rate": 0.6643333333333333,
+            "stale_rate": 0.014801806322127445,
+            "knob": {
+              "error_budget": 0.1
+            }
+          },
+          {
+            "hit_rate": 0.7423333333333333,
+            "stale_rate": 0.028064660978895376,
+            "knob": {
+              "error_budget": 0.2
+            }
+          },
+          {
+            "hit_rate": 0.7916666666666666,
+            "stale_rate": 0.040842105263157895,
+            "knob": {
+              "error_budget": 0.35
+            }
+          }
+        ]
+      },
+      "medium_volatility": {
+        "fixed_ttl": [
+          {
+            "hit_rate": 0.0,
+            "stale_rate": 0.0,
+            "knob": {
+              "ttl": 0.0
+            }
+          },
+          {
+            "hit_rate": 0.09883333333333333,
+            "stale_rate": 0.013490725126475547,
+            "knob": {
+              "ttl": 0.5
+            }
+          },
+          {
+            "hit_rate": 0.16766666666666666,
+            "stale_rate": 0.03876739562624255,
+            "knob": {
+              "ttl": 1
+            }
+          },
+          {
+            "hit_rate": 0.2628333333333333,
+            "stale_rate": 0.06721623335447051,
+            "knob": {
+              "ttl": 2
+            }
+          },
+          {
+            "hit_rate": 0.376,
+            "stale_rate": 0.14849290780141844,
+            "knob": {
+              "ttl": 4
+            }
+          },
+          {
+            "hit_rate": 0.497,
+            "stale_rate": 0.24044265593561368,
+            "knob": {
+              "ttl": 8
+            }
+          },
+          {
+            "hit_rate": 0.6083333333333333,
+            "stale_rate": 0.3591780821917808,
+            "knob": {
+              "ttl": 16
+            }
+          },
+          {
+            "hit_rate": 0.7085,
+            "stale_rate": 0.48506233827334744,
+            "knob": {
+              "ttl": 32
+            }
+          },
+          {
+            "hit_rate": 0.99,
+            "stale_rate": 0.6178451178451179,
+            "knob": {
+              "ttl": 1000000.0
+            }
+          }
+        ],
+        "d_ttl": [
+          {
+            "hit_rate": 0.015666666666666666,
+            "stale_rate": 0.0,
+            "knob": {
+              "h_target": 0.7,
+              "c": 0.5
+            }
+          },
+          {
+            "hit_rate": 0.025166666666666667,
+            "stale_rate": 0.006622516556291391,
+            "knob": {
+              "h_target": 0.6,
+              "c": 0.5
+            }
+          },
+          {
+            "hit_rate": 0.04883333333333333,
+            "stale_rate": 0.013651877133105802,
+            "knob": {
+              "h_target": 0.5,
+              "c": 0.5
+            }
+          }
+        ],
+        "ewma_ttl": [
+          {
+            "hit_rate": 0.2703333333333333,
+            "stale_rate": 0.08877928483353884,
+            "knob": {
+              "h_target": 0.5,
+              "step": 0.1
+            }
+          },
+          {
+            "hit_rate": 0.30966666666666665,
+            "stale_rate": 0.11033369214208827,
+            "knob": {
+              "h_target": 0.5,
+              "step": 0.2
+            }
+          },
+          {
+            "hit_rate": 0.32566666666666666,
+            "stale_rate": 0.12896622313203684,
+            "knob": {
+              "h_target": 0.7,
+              "step": 0.1
+            }
+          },
+          {
+            "hit_rate": 0.3705,
+            "stale_rate": 0.17498875393612237,
+            "knob": {
+              "h_target": 0.9,
+              "step": 0.1
+            }
+          },
+          {
+            "hit_rate": 0.3885,
+            "stale_rate": 0.17546117546117546,
+            "knob": {
+              "h_target": 0.7,
+              "step": 0.2
+            }
+          },
+          {
+            "hit_rate": 0.4425,
+            "stale_rate": 0.224105461393597,
+            "knob": {
+              "h_target": 0.9,
+              "step": 0.2
+            }
+          }
+        ],
+        "freshcache": [
+          {
+            "hit_rate": 0.22783333333333333,
+            "stale_rate": 0.051207022677395755,
+            "knob": {
+              "error_budget": 0.1
+            }
+          },
+          {
+            "hit_rate": 0.3451666666666667,
+            "stale_rate": 0.10719459198454853,
+            "knob": {
+              "error_budget": 0.2
+            }
+          },
+          {
+            "hit_rate": 0.4573333333333333,
+            "stale_rate": 0.130466472303207,
+            "knob": {
+              "error_budget": 0.35
+            }
+          }
+        ],
+        "aimd": [
+          {
+            "hit_rate": 0.22683333333333333,
+            "stale_rate": 0.055841293166789124,
+            "knob": {
+              "a": 0.25,
+              "b": 0.5,
+              "presumed_valid_weight": 0.0
+            }
+          },
+          {
+            "hit_rate": 0.25216666666666665,
+            "stale_rate": 0.07270323859881031,
+            "knob": {
+              "a": 0.5,
+              "b": 0.3,
+              "presumed_valid_weight": 0.0
+            }
+          },
+          {
+            "hit_rate": 0.26716666666666666,
+            "stale_rate": 0.08484092326887087,
+            "knob": {
+              "a": 0.5,
+              "b": 0.5,
+              "presumed_valid_weight": 0.0
+            }
+          },
+          {
+            "hit_rate": 0.2946666666666667,
+            "stale_rate": 0.09502262443438914,
+            "knob": {
+              "a": 1.0,
+              "b": 0.3,
+              "presumed_valid_weight": 0.0
+            }
+          },
+          {
+            "hit_rate": 0.31516666666666665,
+            "stale_rate": 0.12162876784769963,
+            "knob": {
+              "a": 1.0,
+              "b": 0.5,
+              "presumed_valid_weight": 0.0
+            }
+          },
+          {
+            "hit_rate": 0.3471666666666667,
+            "stale_rate": 0.13490158425348056,
+            "knob": {
+              "a": 2.0,
+              "b": 0.3,
+              "presumed_valid_weight": 0.0
+            }
+          },
+          {
+            "hit_rate": 0.3576666666666667,
+            "stale_rate": 0.16216216216216217,
+            "knob": {
+              "a": 2.0,
+              "b": 0.5,
+              "presumed_valid_weight": 0.0
+            }
+          },
+          {
+            "hit_rate": 0.39716666666666667,
+            "stale_rate": 0.17666806546370123,
+            "knob": {
+              "a": 2.0,
+              "b": 0.7,
+              "presumed_valid_weight": 0.0
+            }
+          }
+        ],
+        "freshcache_pooled": [
+          {
+            "hit_rate": 0.2831666666666667,
+            "stale_rate": 0.022954679223072396,
+            "knob": {
+              "error_budget": 0.05
+            }
+          },
+          {
+            "hit_rate": 0.3635,
+            "stale_rate": 0.037138927097661624,
+            "knob": {
+              "error_budget": 0.1
+            }
+          },
+          {
+            "hit_rate": 0.487,
+            "stale_rate": 0.058521560574948665,
+            "knob": {
+              "error_budget": 0.2
+            }
+          },
+          {
+            "hit_rate": 0.5636666666666666,
+            "stale_rate": 0.09195742164399763,
+            "knob": {
+              "error_budget": 0.35
+            }
+          }
+        ]
+      },
+      "high_volatility": {
+        "fixed_ttl": [
+          {
+            "hit_rate": 0.0,
+            "stale_rate": 0.0,
+            "knob": {
+              "ttl": 0.0
+            }
+          },
+          {
+            "hit_rate": 0.1135,
+            "stale_rate": 0.06607929515418502,
+            "knob": {
+              "ttl": 0.5
+            }
+          },
+          {
+            "hit_rate": 0.192,
+            "stale_rate": 0.1328125,
+            "knob": {
+              "ttl": 1
+            }
+          },
+          {
+            "hit_rate": 0.29033333333333333,
+            "stale_rate": 0.25143513203214696,
+            "knob": {
+              "ttl": 2
+            }
+          },
+          {
+            "hit_rate": 0.396,
+            "stale_rate": 0.4036195286195286,
+            "knob": {
+              "ttl": 4
+            }
+          },
+          {
+            "hit_rate": 0.5093333333333333,
+            "stale_rate": 0.569044502617801,
+            "knob": {
+              "ttl": 8
+            }
+          },
+          {
+            "hit_rate": 0.618,
+            "stale_rate": 0.6850053937432579,
+            "knob": {
+              "ttl": 16
+            }
+          },
+          {
+            "hit_rate": 0.7118333333333333,
+            "stale_rate": 0.7417466635448373,
+            "knob": {
+              "ttl": 32
+            }
+          },
+          {
+            "hit_rate": 0.99,
+            "stale_rate": 0.8412457912457912,
+            "knob": {
+              "ttl": 1000000.0
+            }
+          }
+        ],
+        "d_ttl": [
+          {
+            "hit_rate": 0.006,
+            "stale_rate": 0.0,
+            "knob": {
+              "h_target": 0.7,
+              "c": 1.0
+            }
+          },
+          {
+            "hit_rate": 0.035,
+            "stale_rate": 0.04285714285714286,
+            "knob": {
+              "h_target": 0.6,
+              "c": 0.5
+            }
+          },
+          {
+            "hit_rate": 0.07083333333333333,
+            "stale_rate": 0.04941176470588235,
+            "knob": {
+              "h_target": 0.5,
+              "c": 0.5
+            }
+          }
+        ],
+        "ewma_ttl": [
+          {
+            "hit_rate": 0.2886666666666667,
+            "stale_rate": 0.2684757505773672,
+            "knob": {
+              "h_target": 0.5,
+              "step": 0.1
+            }
+          },
+          {
+            "hit_rate": 0.3235,
+            "stale_rate": 0.312210200927357,
+            "knob": {
+              "h_target": 0.5,
+              "step": 0.2
+            }
+          },
+          {
+            "hit_rate": 0.3486666666666667,
+            "stale_rate": 0.34130019120458893,
+            "knob": {
+              "h_target": 0.7,
+              "step": 0.1
+            }
+          },
+          {
+            "hit_rate": 0.40166666666666667,
+            "stale_rate": 0.4340248962655602,
+            "knob": {
+              "h_target": 0.7,
+              "step": 0.2
+            }
+          },
+          {
+            "hit_rate": 0.4615,
+            "stale_rate": 0.5196821957385338,
+            "knob": {
+              "h_target": 0.9,
+              "step": 0.2
+            }
+          }
+        ],
+        "freshcache": [
+          {
+            "hit_rate": 0.154,
+            "stale_rate": 0.07575757575757576,
+            "knob": {
+              "error_budget": 0.05
+            }
+          },
+          {
+            "hit_rate": 0.21033333333333334,
+            "stale_rate": 0.10935023771790808,
+            "knob": {
+              "error_budget": 0.1
+            }
+          },
+          {
+            "hit_rate": 0.2995,
+            "stale_rate": 0.19699499165275458,
+            "knob": {
+              "error_budget": 0.2
+            }
+          },
+          {
+            "hit_rate": 0.355,
+            "stale_rate": 0.26666666666666666,
+            "knob": {
+              "error_budget": 0.35
+            }
+          }
+        ],
+        "aimd": [
+          {
+            "hit_rate": 0.206,
+            "stale_rate": 0.13592233009708737,
+            "knob": {
+              "a": 0.25,
+              "b": 0.3,
+              "presumed_valid_weight": 0.0
+            }
+          },
+          {
+            "hit_rate": 0.23666666666666666,
+            "stale_rate": 0.14929577464788732,
+            "knob": {
+              "a": 0.25,
+              "b": 0.5,
+              "presumed_valid_weight": 0.0
+            }
+          },
+          {
+            "hit_rate": 0.2505,
+            "stale_rate": 0.16167664670658682,
+            "knob": {
+              "a": 0.25,
+              "b": 0.7,
+              "presumed_valid_weight": 0.0
+            }
+          },
+          {
+            "hit_rate": 0.26466666666666666,
+            "stale_rate": 0.17821158690176322,
+            "knob": {
+              "a": 0.5,
+              "b": 0.5,
+              "presumed_valid_weight": 0.0
+            }
+          },
+          {
+            "hit_rate": 0.27116666666666667,
+            "stale_rate": 0.189920098340504,
+            "knob": {
+              "a": 1.0,
+              "b": 0.3,
+              "presumed_valid_weight": 0.0
+            }
+          },
+          {
+            "hit_rate": 0.2801666666666667,
+            "stale_rate": 0.2183224271267103,
+            "knob": {
+              "a": 0.5,
+              "b": 0.7,
+              "presumed_valid_weight": 0.0
+            }
+          },
+          {
+            "hit_rate": 0.3085,
+            "stale_rate": 0.2479740680713128,
+            "knob": {
+              "a": 1.0,
+              "b": 0.5,
+              "presumed_valid_weight": 0.0
+            }
+          },
+          {
+            "hit_rate": 0.31516666666666665,
+            "stale_rate": 0.2659968270756214,
+            "knob": {
+              "a": 2.0,
+              "b": 0.3,
+              "presumed_valid_weight": 0.0
+            }
+          },
+          {
+            "hit_rate": 0.317,
+            "stale_rate": 0.2676130389064143,
+            "knob": {
+              "a": 1.0,
+              "b": 0.7,
+              "presumed_valid_weight": 0.0
+            }
+          },
+          {
+            "hit_rate": 0.3435,
+            "stale_rate": 0.27850557981562346,
+            "knob": {
+              "a": 2.0,
+              "b": 0.5,
+              "presumed_valid_weight": 0.0
+            }
+          },
+          {
+            "hit_rate": 0.3596666666666667,
+            "stale_rate": 0.3586654309545876,
+            "knob": {
+              "a": 2.0,
+              "b": 0.7,
+              "presumed_valid_weight": 0.0
+            }
+          }
+        ],
+        "freshcache_pooled": [
+          {
+            "hit_rate": 0.16033333333333333,
+            "stale_rate": 0.015592515592515593,
+            "knob": {
+              "error_budget": 0.05
+            }
+          },
+          {
+            "hit_rate": 0.2335,
+            "stale_rate": 0.047109207708779445,
+            "knob": {
+              "error_budget": 0.1
+            }
+          },
+          {
+            "hit_rate": 0.2733333333333333,
+            "stale_rate": 0.08963414634146341,
+            "knob": {
+              "error_budget": 0.2
+            }
+          },
+          {
+            "hit_rate": 0.33566666666666667,
+            "stale_rate": 0.1156901688182721,
+            "knob": {
+              "error_budget": 0.35
+            }
+          }
+        ]
+      }
+    },
+    "dominance_summary": {
+      "low_volatility": {
+        "n_aimd_points": 12,
+        "n_dominated": 8,
+        "fraction_non_dominated": 0.3333333333333333
+      },
+      "medium_volatility": {
+        "n_aimd_points": 12,
+        "n_dominated": 4,
+        "fraction_non_dominated": 0.6666666666666666
+      },
+      "high_volatility": {
+        "n_aimd_points": 12,
+        "n_dominated": 0,
+        "fraction_non_dominated": 1.0
+      }
+    },
+    "convergence_summary": {
+      "low_volatility": {
+        "d_ttl": {
+          "median": 11.0,
+          "p10": 9.0,
+          "p90": 28.199999999999996,
+          "n": 15
+        },
+        "ewma_ttl": {
+          "median": 7.5,
+          "p10": 6.0,
+          "p90": 8.0,
+          "n": 6
+        },
+        "freshcache": {
+          "median": 5.0,
+          "p10": 5.0,
+          "p90": 5.0,
+          "n": 4
+        },
+        "aimd": {
+          "median": 15.5,
+          "p10": 12.5,
+          "p90": 19.25,
+          "n": 6
+        },
+        "freshcache_pooled": {
+          "median": 5.0,
+          "p10": 5.0,
+          "p90": 5.0,
+          "n": 4
+        }
+      },
+      "medium_volatility": {
+        "d_ttl": {
+          "median": 11.0,
+          "p10": 9.0,
+          "p90": 28.199999999999996,
+          "n": 15
+        },
+        "ewma_ttl": {
+          "median": 7.75,
+          "p10": 5.75,
+          "p90": 9.5,
+          "n": 6
+        },
+        "freshcache": {
+          "median": 5.0,
+          "p10": 5.0,
+          "p90": 5.0,
+          "n": 4
+        },
+        "aimd": {
+          "median": 14.5,
+          "p10": 9.9,
+          "p90": 18.05,
+          "n": 10
+        },
+        "freshcache_pooled": {
+          "median": 5.0,
+          "p10": 5.0,
+          "p90": 5.0,
+          "n": 4
+        }
+      },
+      "high_volatility": {
+        "d_ttl": {
+          "median": 11.0,
+          "p10": 9.0,
+          "p90": 28.199999999999996,
+          "n": 15
+        },
+        "ewma_ttl": {
+          "median": 7.0,
+          "p10": 6.0,
+          "p90": 9.0,
+          "n": 6
+        },
+        "freshcache": {
+          "median": 5.0,
+          "p10": 5.0,
+          "p90": 5.0,
+          "n": 4
+        },
+        "aimd": {
+          "median": 14.0,
+          "p10": 11.0,
+          "p90": 22.0,
+          "n": 11
+        },
+        "freshcache_pooled": {
+          "median": 5.0,
+          "p10": 5.0,
+          "p90": 5.0,
+          "n": 4
+        }
+      }
+    },
+    "low_repeat_slice_summary": {
+      "low_volatility": {
+        "fixed_ttl": {
+          "best_low_repeat_hit_rate": 0.0,
+          "best_low_repeat_stale_rate": 0.0,
+          "median_convergence_events_low_repeat_context": null,
+          "median_calibrated_fraction": null,
+          "n_low_repeat_sites_typical": 0
+        },
+        "d_ttl": {
+          "best_low_repeat_hit_rate": 0.0,
+          "best_low_repeat_stale_rate": 0.0,
+          "median_convergence_events_low_repeat_context": 11.0,
+          "median_calibrated_fraction": null,
+          "n_low_repeat_sites_typical": 0
+        },
+        "ewma_ttl": {
+          "best_low_repeat_hit_rate": 0.0,
+          "best_low_repeat_stale_rate": 0.0,
+          "median_convergence_events_low_repeat_context": 7.5,
+          "median_calibrated_fraction": null,
+          "n_low_repeat_sites_typical": 0
+        },
+        "freshcache": {
+          "best_low_repeat_hit_rate": 0.0,
+          "best_low_repeat_stale_rate": 0.0,
+          "median_convergence_events_low_repeat_context": 5.0,
+          "median_calibrated_fraction": 0.3666666666666667,
+          "n_low_repeat_sites_typical": 0
+        },
+        "aimd": {
+          "best_low_repeat_hit_rate": 0.0,
+          "best_low_repeat_stale_rate": 0.0,
+          "median_convergence_events_low_repeat_context": 15.5,
+          "median_calibrated_fraction": null,
+          "n_low_repeat_sites_typical": 0
+        },
+        "freshcache_pooled": {
+          "best_low_repeat_hit_rate": 0.0,
+          "best_low_repeat_stale_rate": 0.0,
+          "median_convergence_events_low_repeat_context": 5.0,
+          "median_calibrated_fraction": 0.9083333333333333,
+          "n_low_repeat_sites_typical": 0
+        }
+      },
+      "medium_volatility": {
+        "fixed_ttl": {
+          "best_low_repeat_hit_rate": 0.0,
+          "best_low_repeat_stale_rate": 0.0,
+          "median_convergence_events_low_repeat_context": null,
+          "median_calibrated_fraction": null,
+          "n_low_repeat_sites_typical": 0
+        },
+        "d_ttl": {
+          "best_low_repeat_hit_rate": 0.0,
+          "best_low_repeat_stale_rate": 0.0,
+          "median_convergence_events_low_repeat_context": 11.0,
+          "median_calibrated_fraction": null,
+          "n_low_repeat_sites_typical": 0
+        },
+        "ewma_ttl": {
+          "best_low_repeat_hit_rate": 0.0,
+          "best_low_repeat_stale_rate": 0.0,
+          "median_convergence_events_low_repeat_context": 7.75,
+          "median_calibrated_fraction": null,
+          "n_low_repeat_sites_typical": 0
+        },
+        "freshcache": {
+          "best_low_repeat_hit_rate": 0.0,
+          "best_low_repeat_stale_rate": 0.0,
+          "median_convergence_events_low_repeat_context": 5.0,
+          "median_calibrated_fraction": 0.3833333333333333,
+          "n_low_repeat_sites_typical": 0
+        },
+        "aimd": {
+          "best_low_repeat_hit_rate": 0.0,
+          "best_low_repeat_stale_rate": 0.0,
+          "median_convergence_events_low_repeat_context": 14.5,
+          "median_calibrated_fraction": null,
+          "n_low_repeat_sites_typical": 0
+        },
+        "freshcache_pooled": {
+          "best_low_repeat_hit_rate": 0.0,
+          "best_low_repeat_stale_rate": 0.0,
+          "median_convergence_events_low_repeat_context": 5.0,
+          "median_calibrated_fraction": 0.6416666666666666,
+          "n_low_repeat_sites_typical": 0
+        }
+      },
+      "high_volatility": {
+        "fixed_ttl": {
+          "best_low_repeat_hit_rate": 0.0,
+          "best_low_repeat_stale_rate": 0.0,
+          "median_convergence_events_low_repeat_context": null,
+          "median_calibrated_fraction": null,
+          "n_low_repeat_sites_typical": 0
+        },
+        "d_ttl": {
+          "best_low_repeat_hit_rate": 0.0,
+          "best_low_repeat_stale_rate": 0.0,
+          "median_convergence_events_low_repeat_context": 11.0,
+          "median_calibrated_fraction": null,
+          "n_low_repeat_sites_typical": 0
+        },
+        "ewma_ttl": {
+          "best_low_repeat_hit_rate": 0.0,
+          "best_low_repeat_stale_rate": 0.0,
+          "median_convergence_events_low_repeat_context": 7.0,
+          "median_calibrated_fraction": null,
+          "n_low_repeat_sites_typical": 0
+        },
+        "freshcache": {
+          "best_low_repeat_hit_rate": 0.0,
+          "best_low_repeat_stale_rate": 0.0,
+          "median_convergence_events_low_repeat_context": 5.0,
+          "median_calibrated_fraction": 0.3666666666666667,
+          "n_low_repeat_sites_typical": 0
+        },
+        "aimd": {
+          "best_low_repeat_hit_rate": 0.0,
+          "best_low_repeat_stale_rate": 0.0,
+          "median_convergence_events_low_repeat_context": 14.0,
+          "median_calibrated_fraction": null,
+          "n_low_repeat_sites_typical": 0
+        },
+        "freshcache_pooled": {
+          "best_low_repeat_hit_rate": 0.0,
+          "best_low_repeat_stale_rate": 0.0,
+          "median_convergence_events_low_repeat_context": 5.0,
+          "median_calibrated_fraction": 0.30833333333333335,
+          "n_low_repeat_sites_typical": 0
+        }
+      }
+    },
+    "ablations": {
+      "aimd_presumed_valid_weight": [
+        {
+          "regime": "low_volatility",
+          "policy_family": "aimd",
+          "knob": {
+            "a": 0.5,
+            "b": 0.5,
+            "presumed_valid_weight": 0.0
+          },
+          "total_calls": 6000,
+          "hit_rate": 0.29833333333333334,
+          "stale_rate": 0.013966480446927373,
+          "low_repeat_calls": 0,
+          "low_repeat_hit_rate": 0.0,
+          "low_repeat_stale_rate": 0.0,
+          "n_low_repeat_sites": 0,
+          "n_sites_total": 60,
+          "convergence_events_median": null,
+          "convergence_events_per_site": [],
+          "calibrated_fraction": null,
+          "presumed_valid_weight": 0.0
+        },
+        {
+          "regime": "medium_volatility",
+          "policy_family": "aimd",
+          "knob": {
+            "a": 0.5,
+            "b": 0.5,
+            "presumed_valid_weight": 0.0
+          },
+          "total_calls": 6000,
+          "hit_rate": 0.2623333333333333,
+          "stale_rate": 0.09275730622617535,
+          "low_repeat_calls": 0,
+          "low_repeat_hit_rate": 0.0,
+          "low_repeat_stale_rate": 0.0,
+          "n_low_repeat_sites": 0,
+          "n_sites_total": 60,
+          "convergence_events_median": 10.0,
+          "convergence_events_per_site": [
+            9,
+            11
+          ],
+          "calibrated_fraction": null,
+          "presumed_valid_weight": 0.0
+        },
+        {
+          "regime": "high_volatility",
+          "policy_family": "aimd",
+          "knob": {
+            "a": 0.5,
+            "b": 0.5,
+            "presumed_valid_weight": 0.0
+          },
+          "total_calls": 6000,
+          "hit_rate": 0.261,
+          "stale_rate": 0.18901660280970625,
+          "low_repeat_calls": 0,
+          "low_repeat_hit_rate": 0.0,
+          "low_repeat_stale_rate": 0.0,
+          "n_low_repeat_sites": 0,
+          "n_sites_total": 60,
+          "convergence_events_median": 15.0,
+          "convergence_events_per_site": [
+            12,
+            31,
+            15
+          ],
+          "calibrated_fraction": null,
+          "presumed_valid_weight": 0.0
+        },
+        {
+          "regime": "low_volatility",
+          "policy_family": "aimd",
+          "knob": {
+            "a": 0.5,
+            "b": 0.5,
+            "presumed_valid_weight": 0.25
+          },
+          "total_calls": 6000,
+          "hit_rate": 0.37983333333333336,
+          "stale_rate": 0.02369460289600702,
+          "low_repeat_calls": 0,
+          "low_repeat_hit_rate": 0.0,
+          "low_repeat_stale_rate": 0.0,
+          "n_low_repeat_sites": 0,
+          "n_sites_total": 60,
+          "convergence_events_median": 67.0,
+          "convergence_events_per_site": [
+            57,
+            61,
+            43,
+            143,
+            38,
+            95,
+            67,
+            97,
+            67,
+            81,
+            67,
+            89,
+            52,
+            84,
+            9,
+            81,
+            79,
+            27,
+            85,
+            162,
+            51
+          ],
+          "calibrated_fraction": null,
+          "presumed_valid_weight": 0.25
+        },
+        {
+          "regime": "medium_volatility",
+          "policy_family": "aimd",
+          "knob": {
+            "a": 0.5,
+            "b": 0.5,
+            "presumed_valid_weight": 0.25
+          },
+          "total_calls": 6000,
+          "hit_rate": 0.33566666666666667,
+          "stale_rate": 0.12363455809334657,
+          "low_repeat_calls": 0,
+          "low_repeat_hit_rate": 0.0,
+          "low_repeat_stale_rate": 0.0,
+          "n_low_repeat_sites": 0,
+          "n_sites_total": 60,
+          "convergence_events_median": 73.0,
+          "convergence_events_per_site": [
+            50,
+            52,
+            81,
+            73,
+            39,
+            137,
+            102,
+            67,
+            48,
+            78,
+            15,
+            87,
+            111
+          ],
+          "calibrated_fraction": null,
+          "presumed_valid_weight": 0.25
+        },
+        {
+          "regime": "high_volatility",
+          "policy_family": "aimd",
+          "knob": {
+            "a": 0.5,
+            "b": 0.5,
+            "presumed_valid_weight": 0.25
+          },
+          "total_calls": 6000,
+          "hit_rate": 0.32283333333333336,
+          "stale_rate": 0.25658234383066597,
+          "low_repeat_calls": 0,
+          "low_repeat_hit_rate": 0.0,
+          "low_repeat_stale_rate": 0.0,
+          "n_low_repeat_sites": 0,
+          "n_sites_total": 60,
+          "convergence_events_median": 49.5,
+          "convergence_events_per_site": [
+            135,
+            48,
+            187,
+            25,
+            51,
+            107,
+            17,
+            28
+          ],
+          "calibrated_fraction": null,
+          "presumed_valid_weight": 0.25
+        },
+        {
+          "regime": "low_volatility",
+          "policy_family": "aimd",
+          "knob": {
+            "a": 0.5,
+            "b": 0.5,
+            "presumed_valid_weight": 0.5
+          },
+          "total_calls": 6000,
+          "hit_rate": 0.4211666666666667,
+          "stale_rate": 0.030866640284922833,
+          "low_repeat_calls": 0,
+          "low_repeat_hit_rate": 0.0,
+          "low_repeat_stale_rate": 0.0,
+          "n_low_repeat_sites": 0,
+          "n_sites_total": 60,
+          "convergence_events_median": 84.0,
+          "convergence_events_per_site": [
+            73,
+            54,
+            61,
+            150,
+            49,
+            105,
+            111,
+            74,
+            87,
+            74,
+            99,
+            89,
+            14,
+            97,
+            84,
+            93,
+            175,
+            59,
+            57
+          ],
+          "calibrated_fraction": null,
+          "presumed_valid_weight": 0.5
+        },
+        {
+          "regime": "medium_volatility",
+          "policy_family": "aimd",
+          "knob": {
+            "a": 0.5,
+            "b": 0.5,
+            "presumed_valid_weight": 0.5
+          },
+          "total_calls": 6000,
+          "hit_rate": 0.37966666666666665,
+          "stale_rate": 0.1646180860403863,
+          "low_repeat_calls": 0,
+          "low_repeat_hit_rate": 0.0,
+          "low_repeat_stale_rate": 0.0,
+          "n_low_repeat_sites": 0,
+          "n_sites_total": 60,
+          "convergence_events_median": 78.0,
+          "convergence_events_per_site": [
+            56,
+            78,
+            107,
+            45,
+            56,
+            80,
+            60,
+            85,
+            95,
+            119,
+            51
+          ],
+          "calibrated_fraction": null,
+          "presumed_valid_weight": 0.5
+        },
+        {
+          "regime": "high_volatility",
+          "policy_family": "aimd",
+          "knob": {
+            "a": 0.5,
+            "b": 0.5,
+            "presumed_valid_weight": 0.5
+          },
+          "total_calls": 6000,
+          "hit_rate": 0.36466666666666664,
+          "stale_rate": 0.32221206581352835,
+          "low_repeat_calls": 0,
+          "low_repeat_hit_rate": 0.0,
+          "low_repeat_stale_rate": 0.0,
+          "n_low_repeat_sites": 0,
+          "n_sites_total": 60,
+          "convergence_events_median": 49.0,
+          "convergence_events_per_site": [
+            144,
+            17,
+            55,
+            66,
+            123,
+            197,
+            47,
+            24,
+            14,
+            33,
+            49
+          ],
+          "calibrated_fraction": null,
+          "presumed_valid_weight": 0.5
+        }
+      ],
+      "spot_check_rate_sensitivity": [
+        {
+          "regime": "low_volatility",
+          "spot_check_rate": 0.05,
+          "hit_rate": 0.19116666666666668,
+          "stale_rate": 0.006102877070619006
+        },
+        {
+          "regime": "medium_volatility",
+          "spot_check_rate": 0.05,
+          "hit_rate": 0.19933333333333333,
+          "stale_rate": 0.06020066889632107
+        },
+        {
+          "regime": "high_volatility",
+          "spot_check_rate": 0.05,
+          "hit_rate": 0.22866666666666666,
+          "stale_rate": 0.19096209912536444
+        },
+        {
+          "regime": "low_volatility",
+          "spot_check_rate": 0.1,
+          "hit_rate": 0.221,
+          "stale_rate": 0.00980392156862745
+        },
+        {
+          "regime": "medium_volatility",
+          "spot_check_rate": 0.1,
+          "hit_rate": 0.23733333333333334,
+          "stale_rate": 0.07162921348314606
+        },
+        {
+          "regime": "high_volatility",
+          "spot_check_rate": 0.1,
+          "hit_rate": 0.24866666666666667,
+          "stale_rate": 0.19369973190348524
+        },
+        {
+          "regime": "low_volatility",
+          "spot_check_rate": 0.2,
+          "hit_rate": 0.2838333333333333,
+          "stale_rate": 0.012918379330593071
+        },
+        {
+          "regime": "medium_volatility",
+          "spot_check_rate": 0.2,
+          "hit_rate": 0.2643333333333333,
+          "stale_rate": 0.07503152585119799
+        },
+        {
+          "regime": "high_volatility",
+          "spot_check_rate": 0.2,
+          "hit_rate": 0.2733333333333333,
+          "stale_rate": 0.20548780487804877
+        },
+        {
+          "regime": "low_volatility",
+          "spot_check_rate": 0.4,
+          "hit_rate": 0.363,
+          "stale_rate": 0.016069788797061526
+        },
+        {
+          "regime": "medium_volatility",
+          "spot_check_rate": 0.4,
+          "hit_rate": 0.3075,
+          "stale_rate": 0.07804878048780488
+        },
+        {
+          "regime": "high_volatility",
+          "spot_check_rate": 0.4,
+          "hit_rate": 0.2815,
+          "stale_rate": 0.18058022498519835
+        },
+        {
+          "regime": "low_volatility",
+          "spot_check_rate": 0.8,
+          "hit_rate": 0.43933333333333335,
+          "stale_rate": 0.018209408194233688
+        },
+        {
+          "regime": "medium_volatility",
+          "spot_check_rate": 0.8,
+          "hit_rate": 0.36183333333333334,
+          "stale_rate": 0.08060801473975127
+        },
+        {
+          "regime": "high_volatility",
+          "spot_check_rate": 0.8,
+          "hit_rate": 0.3045,
+          "stale_rate": 0.17569786535303777
+        }
+      ]
+    },
+    "boundary_sanity_checks": {
+      "ttl_zero_hit_rate": 0.0,
+      "ttl_inf_hit_rate": 0.95,
+      "ttl_inf_stale_rate": 0.0,
+      "aimd_window_grows_on_valid_hits": true,
+      "aimd_window_collapses_on_stale_hit": true,
+      "aimd_window_recovers_after_collapse": true,
+      "dttl_ttl_final_low_init": 0.01,
+      "dttl_stuck_at_floor_from_low_init": true,
+      "dttl_ttl_final_high_init": 50.476601214499965,
+      "dttl_well_behaved_from_high_init": true,
+      "ewma_ttl_final_low_init": 0.3100000000000021,
+      "ewma_recovers_from_low_init_where_dttl_gets_stuck": true
+    },
+    "low_repeat_mini_check": {
+      "freshcache_lambda_final": 0.1,
+      "freshcache_lambda_prior": 0.1,
+      "freshcache_calibrated": false,
+      "aimd_window_final": 2.0,
+      "aimd_window_init": 1.0,
+      "aimd_window_moved": true
+    },
+    "runtime_seconds": 5.641364097595215
+  },
+  "datasets": [
+    {
+      "dataset": "aimd_cache_simulation_replay_grid",
+      "examples": [
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=fixed_ttl, knob=(ttl=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.0, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.000000",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "fixed_ttl",
+          "metadata_knob": {
+            "ttl": 0.0
+          },
+          "metadata_hit_rate": 0.0,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=fixed_ttl, knob=(ttl=0.5), n_calls=6000",
+          "output": "{\"hit_rate\": 0.09383333333333334, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.093833",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "fixed_ttl",
+          "metadata_knob": {
+            "ttl": 0.5
+          },
+          "metadata_hit_rate": 0.09383333333333334,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=fixed_ttl, knob=(ttl=1), n_calls=6000",
+          "output": "{\"hit_rate\": 0.16266666666666665, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.162667",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "fixed_ttl",
+          "metadata_knob": {
+            "ttl": 1
+          },
+          "metadata_hit_rate": 0.16266666666666665,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=fixed_ttl, knob=(ttl=4), n_calls=6000",
+          "output": "{\"hit_rate\": 0.367, \"stale_rate\": 0.01589464123524069, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.367000",
+          "predict_stale_rate": "0.015895",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "fixed_ttl",
+          "metadata_knob": {
+            "ttl": 4
+          },
+          "metadata_hit_rate": 0.367,
+          "metadata_stale_rate": 0.01589464123524069,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=fixed_ttl, knob=(ttl=8), n_calls=6000",
+          "output": "{\"hit_rate\": 0.48583333333333334, \"stale_rate\": 0.03053173241852487, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.485833",
+          "predict_stale_rate": "0.030532",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "fixed_ttl",
+          "metadata_knob": {
+            "ttl": 8
+          },
+          "metadata_hit_rate": 0.48583333333333334,
+          "metadata_stale_rate": 0.03053173241852487,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=fixed_ttl, knob=(ttl=16), n_calls=6000",
+          "output": "{\"hit_rate\": 0.6056666666666667, \"stale_rate\": 0.07072096862960925, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.605667",
+          "predict_stale_rate": "0.070721",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "fixed_ttl",
+          "metadata_knob": {
+            "ttl": 16
+          },
+          "metadata_hit_rate": 0.6056666666666667,
+          "metadata_stale_rate": 0.07072096862960925,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=fixed_ttl, knob=(ttl=32), n_calls=6000",
+          "output": "{\"hit_rate\": 0.7098333333333333, \"stale_rate\": 0.13829537450105658, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.709833",
+          "predict_stale_rate": "0.138295",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "fixed_ttl",
+          "metadata_knob": {
+            "ttl": 32
+          },
+          "metadata_hit_rate": 0.7098333333333333,
+          "metadata_stale_rate": 0.13829537450105658,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=d_ttl, knob=(h_target=0.5, c=0.5), n_calls=6000",
+          "output": "{\"hit_rate\": 0.04583333333333333, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 3.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.045833",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.5,
+            "c": 0.5
+          },
+          "metadata_hit_rate": 0.04583333333333333,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 3.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=fixed_ttl, knob=(ttl=2), n_calls=6000",
+          "output": "{\"hit_rate\": 0.2585, \"stale_rate\": 0.007736943907156673, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.258500",
+          "predict_stale_rate": "0.007737",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "fixed_ttl",
+          "metadata_knob": {
+            "ttl": 2
+          },
+          "metadata_hit_rate": 0.2585,
+          "metadata_stale_rate": 0.007736943907156673,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=d_ttl, knob=(h_target=0.5, c=2.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.004, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 10.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.004000",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.5,
+            "c": 2.0
+          },
+          "metadata_hit_rate": 0.004,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 10.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=d_ttl, knob=(h_target=0.6, c=1.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.005333333333333333, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 14.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.005333",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.6,
+            "c": 1.0
+          },
+          "metadata_hit_rate": 0.005333333333333333,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 14.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=d_ttl, knob=(h_target=0.6, c=0.5), n_calls=6000",
+          "output": "{\"hit_rate\": 0.020666666666666667, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 46.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.020667",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.6,
+            "c": 0.5
+          },
+          "metadata_hit_rate": 0.020666666666666667,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 46.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=d_ttl, knob=(h_target=0.7, c=0.5), n_calls=6000",
+          "output": "{\"hit_rate\": 0.0135, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 31.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.013500",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.7,
+            "c": 0.5
+          },
+          "metadata_hit_rate": 0.0135,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 31.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=fixed_ttl, knob=(ttl=1000000.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.99, \"stale_rate\": 0.3202020202020202, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.990000",
+          "predict_stale_rate": "0.320202",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "fixed_ttl",
+          "metadata_knob": {
+            "ttl": 1000000.0
+          },
+          "metadata_hit_rate": 0.99,
+          "metadata_stale_rate": 0.3202020202020202,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=d_ttl, knob=(h_target=0.7, c=2.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.0025, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 9.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.002500",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.7,
+            "c": 2.0
+          },
+          "metadata_hit_rate": 0.0025,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 9.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=d_ttl, knob=(h_target=0.8, c=0.5), n_calls=6000",
+          "output": "{\"hit_rate\": 0.008833333333333334, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 24.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.008833",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.8,
+            "c": 0.5
+          },
+          "metadata_hit_rate": 0.008833333333333334,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 24.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=d_ttl, knob=(h_target=0.9, c=0.5), n_calls=6000",
+          "output": "{\"hit_rate\": 0.006166666666666667, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 20.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.006167",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.9,
+            "c": 0.5
+          },
+          "metadata_hit_rate": 0.006166666666666667,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 20.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=d_ttl, knob=(h_target=0.9, c=1.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.003, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 11.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.003000",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.9,
+            "c": 1.0
+          },
+          "metadata_hit_rate": 0.003,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 11.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=d_ttl, knob=(h_target=0.8, c=1.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.0035, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 11.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.003500",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.8,
+            "c": 1.0
+          },
+          "metadata_hit_rate": 0.0035,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 11.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=d_ttl, knob=(h_target=0.5, c=1.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.009833333333333333, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 17.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.009833",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.5,
+            "c": 1.0
+          },
+          "metadata_hit_rate": 0.009833333333333333,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 17.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=ewma_ttl, knob=(h_target=0.5, step=0.1), n_calls=6000",
+          "output": "{\"hit_rate\": 0.2693333333333333, \"stale_rate\": 0.009900990099009901, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 6.5, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.269333",
+          "predict_stale_rate": "0.009901",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "ewma_ttl",
+          "metadata_knob": {
+            "h_target": 0.5,
+            "step": 0.1
+          },
+          "metadata_hit_rate": 0.2693333333333333,
+          "metadata_stale_rate": 0.009900990099009901,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 6.5,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=ewma_ttl, knob=(h_target=0.7, step=0.1), n_calls=6000",
+          "output": "{\"hit_rate\": 0.3238333333333333, \"stale_rate\": 0.013381369016984045, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 7.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.323833",
+          "predict_stale_rate": "0.013381",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "ewma_ttl",
+          "metadata_knob": {
+            "h_target": 0.7,
+            "step": 0.1
+          },
+          "metadata_hit_rate": 0.3238333333333333,
+          "metadata_stale_rate": 0.013381369016984045,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 7.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=ewma_ttl, knob=(h_target=0.7, step=0.2), n_calls=6000",
+          "output": "{\"hit_rate\": 0.38366666666666666, \"stale_rate\": 0.021720243266724587, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 8.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.383667",
+          "predict_stale_rate": "0.021720",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "ewma_ttl",
+          "metadata_knob": {
+            "h_target": 0.7,
+            "step": 0.2
+          },
+          "metadata_hit_rate": 0.38366666666666666,
+          "metadata_stale_rate": 0.021720243266724587,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 8.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=d_ttl, knob=(h_target=0.6, c=2.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.003, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 9.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.003000",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.6,
+            "c": 2.0
+          },
+          "metadata_hit_rate": 0.003,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 9.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=ewma_ttl, knob=(h_target=0.9, step=0.2), n_calls=6000",
+          "output": "{\"hit_rate\": 0.4355, \"stale_rate\": 0.029850746268656716, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 8.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.435500",
+          "predict_stale_rate": "0.029851",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "ewma_ttl",
+          "metadata_knob": {
+            "h_target": 0.9,
+            "step": 0.2
+          },
+          "metadata_hit_rate": 0.4355,
+          "metadata_stale_rate": 0.029850746268656716,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 8.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=d_ttl, knob=(h_target=0.7, c=1.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.0045, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 12.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.004500",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.7,
+            "c": 1.0
+          },
+          "metadata_hit_rate": 0.0045,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 12.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=freshcache, knob=(error_budget=0.05), n_calls=6000",
+          "output": "{\"hit_rate\": 0.15583333333333332, \"stale_rate\": 0.0010695187165775401, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 5.0, \"calibrated_fraction\": 0.15}",
+          "predict_hit_rate": "0.155833",
+          "predict_stale_rate": "0.001070",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "freshcache",
+          "metadata_knob": {
+            "error_budget": 0.05
+          },
+          "metadata_hit_rate": 0.15583333333333332,
+          "metadata_stale_rate": 0.0010695187165775401,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 5.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": 0.15
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=d_ttl, knob=(h_target=0.8, c=2.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.002, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 9.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.002000",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.8,
+            "c": 2.0
+          },
+          "metadata_hit_rate": 0.002,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 9.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=d_ttl, knob=(h_target=0.9, c=2.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.0018333333333333333, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 9.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.001833",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.9,
+            "c": 2.0
+          },
+          "metadata_hit_rate": 0.0018333333333333333,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 9.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=aimd, knob=(a=0.25, b=0.3, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.23383333333333334, \"stale_rate\": 0.007840342124019958, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.233833",
+          "predict_stale_rate": "0.007840",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 0.25,
+            "b": 0.3,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.23383333333333334,
+          "metadata_stale_rate": 0.007840342124019958,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=aimd, knob=(a=0.25, b=0.5, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.2515, \"stale_rate\": 0.0066269052352551355, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 10.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.251500",
+          "predict_stale_rate": "0.006627",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 0.25,
+            "b": 0.5,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.2515,
+          "metadata_stale_rate": 0.0066269052352551355,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 10.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=ewma_ttl, knob=(h_target=0.5, step=0.2), n_calls=6000",
+          "output": "{\"hit_rate\": 0.3075, \"stale_rate\": 0.01084010840108401, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 5.5, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.307500",
+          "predict_stale_rate": "0.010840",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "ewma_ttl",
+          "metadata_knob": {
+            "h_target": 0.5,
+            "step": 0.2
+          },
+          "metadata_hit_rate": 0.3075,
+          "metadata_stale_rate": 0.01084010840108401,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 5.5,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=ewma_ttl, knob=(h_target=0.9, step=0.1), n_calls=6000",
+          "output": "{\"hit_rate\": 0.36883333333333335, \"stale_rate\": 0.019430637144148215, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 8.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.368833",
+          "predict_stale_rate": "0.019431",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "ewma_ttl",
+          "metadata_knob": {
+            "h_target": 0.9,
+            "step": 0.1
+          },
+          "metadata_hit_rate": 0.36883333333333335,
+          "metadata_stale_rate": 0.019430637144148215,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 8.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=aimd, knob=(a=0.25, b=0.7, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.2445, \"stale_rate\": 0.006816632583503749, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 15.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.244500",
+          "predict_stale_rate": "0.006817",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 0.25,
+            "b": 0.7,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.2445,
+          "metadata_stale_rate": 0.006816632583503749,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 15.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=aimd, knob=(a=0.5, b=0.7, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.2965, \"stale_rate\": 0.013490725126475547, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 19.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.296500",
+          "predict_stale_rate": "0.013491",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 0.5,
+            "b": 0.7,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.2965,
+          "metadata_stale_rate": 0.013490725126475547,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 19.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=freshcache, knob=(error_budget=0.1), n_calls=6000",
+          "output": "{\"hit_rate\": 0.2851666666666667, \"stale_rate\": 0.025131502045587374, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 5.0, \"calibrated_fraction\": 0.26666666666666666}",
+          "predict_hit_rate": "0.285167",
+          "predict_stale_rate": "0.025132",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "freshcache",
+          "metadata_knob": {
+            "error_budget": 0.1
+          },
+          "metadata_hit_rate": 0.2851666666666667,
+          "metadata_stale_rate": 0.025131502045587374,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 5.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": 0.26666666666666666
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=aimd, knob=(a=0.5, b=0.3, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.2776666666666667, \"stale_rate\": 0.012004801920768308, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.277667",
+          "predict_stale_rate": "0.012005",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 0.5,
+            "b": 0.3,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.2776666666666667,
+          "metadata_stale_rate": 0.012004801920768308,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=aimd, knob=(a=1.0, b=0.3, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.3506666666666667, \"stale_rate\": 0.019486692015209126, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.350667",
+          "predict_stale_rate": "0.019487",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 1.0,
+            "b": 0.3,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.3506666666666667,
+          "metadata_stale_rate": 0.019486692015209126,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=aimd, knob=(a=0.5, b=0.5, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.2911666666666667, \"stale_rate\": 0.009158557527189467, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.291167",
+          "predict_stale_rate": "0.009159",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 0.5,
+            "b": 0.5,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.2911666666666667,
+          "metadata_stale_rate": 0.009158557527189467,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=aimd, knob=(a=1.0, b=0.5, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.36, \"stale_rate\": 0.025, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.360000",
+          "predict_stale_rate": "0.025000",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 1.0,
+            "b": 0.5,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.36,
+          "metadata_stale_rate": 0.025,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=aimd, knob=(a=1.0, b=0.7, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.3473333333333333, \"stale_rate\": 0.02399232245681382, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 19.5, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.347333",
+          "predict_stale_rate": "0.023992",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 1.0,
+            "b": 0.7,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.3473333333333333,
+          "metadata_stale_rate": 0.02399232245681382,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 19.5,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=aimd, knob=(a=2.0, b=0.3, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.414, \"stale_rate\": 0.0249597423510467, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.414000",
+          "predict_stale_rate": "0.024960",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 2.0,
+            "b": 0.3,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.414,
+          "metadata_stale_rate": 0.0249597423510467,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=aimd, knob=(a=2.0, b=0.7, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.41383333333333333, \"stale_rate\": 0.03584373741441804, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 16.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.413833",
+          "predict_stale_rate": "0.035844",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 2.0,
+            "b": 0.7,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.41383333333333333,
+          "metadata_stale_rate": 0.03584373741441804,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 16.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=aimd, knob=(a=2.0, b=0.5, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.43333333333333335, \"stale_rate\": 0.03230769230769231, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 15.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.433333",
+          "predict_stale_rate": "0.032308",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 2.0,
+            "b": 0.5,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.43333333333333335,
+          "metadata_stale_rate": 0.03230769230769231,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 15.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=fixed_ttl, knob=(ttl=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.0, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.000000",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "fixed_ttl",
+          "metadata_knob": {
+            "ttl": 0.0
+          },
+          "metadata_hit_rate": 0.0,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=fixed_ttl, knob=(ttl=0.5), n_calls=6000",
+          "output": "{\"hit_rate\": 0.09883333333333333, \"stale_rate\": 0.013490725126475547, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.098833",
+          "predict_stale_rate": "0.013491",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "fixed_ttl",
+          "metadata_knob": {
+            "ttl": 0.5
+          },
+          "metadata_hit_rate": 0.09883333333333333,
+          "metadata_stale_rate": 0.013490725126475547,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=fixed_ttl, knob=(ttl=1), n_calls=6000",
+          "output": "{\"hit_rate\": 0.16766666666666666, \"stale_rate\": 0.03876739562624255, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.167667",
+          "predict_stale_rate": "0.038767",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "fixed_ttl",
+          "metadata_knob": {
+            "ttl": 1
+          },
+          "metadata_hit_rate": 0.16766666666666666,
+          "metadata_stale_rate": 0.03876739562624255,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=fixed_ttl, knob=(ttl=2), n_calls=6000",
+          "output": "{\"hit_rate\": 0.2628333333333333, \"stale_rate\": 0.06721623335447051, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.262833",
+          "predict_stale_rate": "0.067216",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "fixed_ttl",
+          "metadata_knob": {
+            "ttl": 2
+          },
+          "metadata_hit_rate": 0.2628333333333333,
+          "metadata_stale_rate": 0.06721623335447051,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=fixed_ttl, knob=(ttl=4), n_calls=6000",
+          "output": "{\"hit_rate\": 0.376, \"stale_rate\": 0.14849290780141844, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.376000",
+          "predict_stale_rate": "0.148493",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "fixed_ttl",
+          "metadata_knob": {
+            "ttl": 4
+          },
+          "metadata_hit_rate": 0.376,
+          "metadata_stale_rate": 0.14849290780141844,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=freshcache, knob=(error_budget=0.2), n_calls=6000",
+          "output": "{\"hit_rate\": 0.43083333333333335, \"stale_rate\": 0.03868471953578337, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 5.0, \"calibrated_fraction\": 0.4666666666666667}",
+          "predict_hit_rate": "0.430833",
+          "predict_stale_rate": "0.038685",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "freshcache",
+          "metadata_knob": {
+            "error_budget": 0.2
+          },
+          "metadata_hit_rate": 0.43083333333333335,
+          "metadata_stale_rate": 0.03868471953578337,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 5.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": 0.4666666666666667
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=fixed_ttl, knob=(ttl=8), n_calls=6000",
+          "output": "{\"hit_rate\": 0.497, \"stale_rate\": 0.24044265593561368, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.497000",
+          "predict_stale_rate": "0.240443",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "fixed_ttl",
+          "metadata_knob": {
+            "ttl": 8
+          },
+          "metadata_hit_rate": 0.497,
+          "metadata_stale_rate": 0.24044265593561368,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=fixed_ttl, knob=(ttl=16), n_calls=6000",
+          "output": "{\"hit_rate\": 0.6083333333333333, \"stale_rate\": 0.3591780821917808, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.608333",
+          "predict_stale_rate": "0.359178",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "fixed_ttl",
+          "metadata_knob": {
+            "ttl": 16
+          },
+          "metadata_hit_rate": 0.6083333333333333,
+          "metadata_stale_rate": 0.3591780821917808,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=fixed_ttl, knob=(ttl=32), n_calls=6000",
+          "output": "{\"hit_rate\": 0.7085, \"stale_rate\": 0.48506233827334744, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.708500",
+          "predict_stale_rate": "0.485062",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "fixed_ttl",
+          "metadata_knob": {
+            "ttl": 32
+          },
+          "metadata_hit_rate": 0.7085,
+          "metadata_stale_rate": 0.48506233827334744,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=fixed_ttl, knob=(ttl=1000000.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.99, \"stale_rate\": 0.6178451178451179, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.990000",
+          "predict_stale_rate": "0.617845",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "fixed_ttl",
+          "metadata_knob": {
+            "ttl": 1000000.0
+          },
+          "metadata_hit_rate": 0.99,
+          "metadata_stale_rate": 0.6178451178451179,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=d_ttl, knob=(h_target=0.5, c=0.5), n_calls=6000",
+          "output": "{\"hit_rate\": 0.04883333333333333, \"stale_rate\": 0.013651877133105802, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 4.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.048833",
+          "predict_stale_rate": "0.013652",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.5,
+            "c": 0.5
+          },
+          "metadata_hit_rate": 0.04883333333333333,
+          "metadata_stale_rate": 0.013651877133105802,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 4.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=d_ttl, knob=(h_target=0.5, c=1.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.011333333333333334, \"stale_rate\": 0.014705882352941176, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 17.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.011333",
+          "predict_stale_rate": "0.014706",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.5,
+            "c": 1.0
+          },
+          "metadata_hit_rate": 0.011333333333333334,
+          "metadata_stale_rate": 0.014705882352941176,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 17.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=d_ttl, knob=(h_target=0.6, c=0.5), n_calls=6000",
+          "output": "{\"hit_rate\": 0.025166666666666667, \"stale_rate\": 0.006622516556291391, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 46.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.025167",
+          "predict_stale_rate": "0.006623",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.6,
+            "c": 0.5
+          },
+          "metadata_hit_rate": 0.025166666666666667,
+          "metadata_stale_rate": 0.006622516556291391,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 46.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=d_ttl, knob=(h_target=0.6, c=1.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.0075, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 14.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.007500",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.6,
+            "c": 1.0
+          },
+          "metadata_hit_rate": 0.0075,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 14.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=d_ttl, knob=(h_target=0.5, c=2.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.006166666666666667, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 10.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.006167",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.5,
+            "c": 2.0
+          },
+          "metadata_hit_rate": 0.006166666666666667,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 10.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=d_ttl, knob=(h_target=0.6, c=2.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.004833333333333334, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 9.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.004833",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.6,
+            "c": 2.0
+          },
+          "metadata_hit_rate": 0.004833333333333334,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 9.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=freshcache, knob=(error_budget=0.35), n_calls=6000",
+          "output": "{\"hit_rate\": 0.5278333333333334, \"stale_rate\": 0.04546889801073571, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 5.0, \"calibrated_fraction\": 0.48333333333333334}",
+          "predict_hit_rate": "0.527833",
+          "predict_stale_rate": "0.045469",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "freshcache",
+          "metadata_knob": {
+            "error_budget": 0.35
+          },
+          "metadata_hit_rate": 0.5278333333333334,
+          "metadata_stale_rate": 0.04546889801073571,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 5.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": 0.48333333333333334
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=d_ttl, knob=(h_target=0.7, c=0.5), n_calls=6000",
+          "output": "{\"hit_rate\": 0.015666666666666666, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 31.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.015667",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.7,
+            "c": 0.5
+          },
+          "metadata_hit_rate": 0.015666666666666666,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 31.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=d_ttl, knob=(h_target=0.7, c=1.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.006, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 12.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.006000",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.7,
+            "c": 1.0
+          },
+          "metadata_hit_rate": 0.006,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 12.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=d_ttl, knob=(h_target=0.7, c=2.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.004333333333333333, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 9.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.004333",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.7,
+            "c": 2.0
+          },
+          "metadata_hit_rate": 0.004333333333333333,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 9.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=d_ttl, knob=(h_target=0.8, c=0.5), n_calls=6000",
+          "output": "{\"hit_rate\": 0.011333333333333334, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 24.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.011333",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.8,
+            "c": 0.5
+          },
+          "metadata_hit_rate": 0.011333333333333334,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 24.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=d_ttl, knob=(h_target=0.8, c=1.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.005333333333333333, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 11.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.005333",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.8,
+            "c": 1.0
+          },
+          "metadata_hit_rate": 0.005333333333333333,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 11.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=d_ttl, knob=(h_target=0.8, c=2.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.004, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 9.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.004000",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.8,
+            "c": 2.0
+          },
+          "metadata_hit_rate": 0.004,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 9.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=d_ttl, knob=(h_target=0.9, c=0.5), n_calls=6000",
+          "output": "{\"hit_rate\": 0.009333333333333334, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 20.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.009333",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.9,
+            "c": 0.5
+          },
+          "metadata_hit_rate": 0.009333333333333334,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 20.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=d_ttl, knob=(h_target=0.9, c=1.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.005, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 11.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.005000",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.9,
+            "c": 1.0
+          },
+          "metadata_hit_rate": 0.005,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 11.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=d_ttl, knob=(h_target=0.9, c=2.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.003833333333333333, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 9.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.003833",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.9,
+            "c": 2.0
+          },
+          "metadata_hit_rate": 0.003833333333333333,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 9.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=ewma_ttl, knob=(h_target=0.5, step=0.1), n_calls=6000",
+          "output": "{\"hit_rate\": 0.2703333333333333, \"stale_rate\": 0.08877928483353884, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 5.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.270333",
+          "predict_stale_rate": "0.088779",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "ewma_ttl",
+          "metadata_knob": {
+            "h_target": 0.5,
+            "step": 0.1
+          },
+          "metadata_hit_rate": 0.2703333333333333,
+          "metadata_stale_rate": 0.08877928483353884,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 5.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=ewma_ttl, knob=(h_target=0.5, step=0.2), n_calls=6000",
+          "output": "{\"hit_rate\": 0.30966666666666665, \"stale_rate\": 0.11033369214208827, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 6.5, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.309667",
+          "predict_stale_rate": "0.110334",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "ewma_ttl",
+          "metadata_knob": {
+            "h_target": 0.5,
+            "step": 0.2
+          },
+          "metadata_hit_rate": 0.30966666666666665,
+          "metadata_stale_rate": 0.11033369214208827,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 6.5,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=ewma_ttl, knob=(h_target=0.7, step=0.1), n_calls=6000",
+          "output": "{\"hit_rate\": 0.32566666666666666, \"stale_rate\": 0.12896622313203684, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 7.5, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.325667",
+          "predict_stale_rate": "0.128966",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "ewma_ttl",
+          "metadata_knob": {
+            "h_target": 0.7,
+            "step": 0.1
+          },
+          "metadata_hit_rate": 0.32566666666666666,
+          "metadata_stale_rate": 0.12896622313203684,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 7.5,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=ewma_ttl, knob=(h_target=0.9, step=0.1), n_calls=6000",
+          "output": "{\"hit_rate\": 0.3705, \"stale_rate\": 0.17498875393612237, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 8.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.370500",
+          "predict_stale_rate": "0.174989",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "ewma_ttl",
+          "metadata_knob": {
+            "h_target": 0.9,
+            "step": 0.1
+          },
+          "metadata_hit_rate": 0.3705,
+          "metadata_stale_rate": 0.17498875393612237,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 8.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=ewma_ttl, knob=(h_target=0.7, step=0.2), n_calls=6000",
+          "output": "{\"hit_rate\": 0.3885, \"stale_rate\": 0.17546117546117546, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 8.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.388500",
+          "predict_stale_rate": "0.175461",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "ewma_ttl",
+          "metadata_knob": {
+            "h_target": 0.7,
+            "step": 0.2
+          },
+          "metadata_hit_rate": 0.3885,
+          "metadata_stale_rate": 0.17546117546117546,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 8.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=ewma_ttl, knob=(h_target=0.9, step=0.2), n_calls=6000",
+          "output": "{\"hit_rate\": 0.4425, \"stale_rate\": 0.224105461393597, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 11.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.442500",
+          "predict_stale_rate": "0.224105",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "ewma_ttl",
+          "metadata_knob": {
+            "h_target": 0.9,
+            "step": 0.2
+          },
+          "metadata_hit_rate": 0.4425,
+          "metadata_stale_rate": 0.224105461393597,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 11.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=freshcache, knob=(error_budget=0.05), n_calls=6000",
+          "output": "{\"hit_rate\": 0.12816666666666668, \"stale_rate\": 0.055916775032509754, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 5.0, \"calibrated_fraction\": 0.2}",
+          "predict_hit_rate": "0.128167",
+          "predict_stale_rate": "0.055917",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "freshcache",
+          "metadata_knob": {
+            "error_budget": 0.05
+          },
+          "metadata_hit_rate": 0.12816666666666668,
+          "metadata_stale_rate": 0.055916775032509754,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 5.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": 0.2
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=freshcache, knob=(error_budget=0.1), n_calls=6000",
+          "output": "{\"hit_rate\": 0.22783333333333333, \"stale_rate\": 0.051207022677395755, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 5.0, \"calibrated_fraction\": 0.36666666666666664}",
+          "predict_hit_rate": "0.227833",
+          "predict_stale_rate": "0.051207",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "freshcache",
+          "metadata_knob": {
+            "error_budget": 0.1
+          },
+          "metadata_hit_rate": 0.22783333333333333,
+          "metadata_stale_rate": 0.051207022677395755,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 5.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": 0.36666666666666664
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=freshcache, knob=(error_budget=0.2), n_calls=6000",
+          "output": "{\"hit_rate\": 0.3451666666666667, \"stale_rate\": 0.10719459198454853, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 5.0, \"calibrated_fraction\": 0.4}",
+          "predict_hit_rate": "0.345167",
+          "predict_stale_rate": "0.107195",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "freshcache",
+          "metadata_knob": {
+            "error_budget": 0.2
+          },
+          "metadata_hit_rate": 0.3451666666666667,
+          "metadata_stale_rate": 0.10719459198454853,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 5.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": 0.4
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=aimd, knob=(a=0.25, b=0.3, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.20783333333333334, \"stale_rate\": 0.057738572574178026, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 10.5, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.207833",
+          "predict_stale_rate": "0.057739",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 0.25,
+            "b": 0.3,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.20783333333333334,
+          "metadata_stale_rate": 0.057738572574178026,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 10.5,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=freshcache_pooled, knob=(error_budget=0.05), n_calls=6000",
+          "output": "{\"hit_rate\": 0.5193333333333333, \"stale_rate\": 0.01700898587933248, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 5.0, \"calibrated_fraction\": 0.8166666666666667}",
+          "predict_hit_rate": "0.519333",
+          "predict_stale_rate": "0.017009",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "freshcache_pooled",
+          "metadata_knob": {
+            "error_budget": 0.05
+          },
+          "metadata_hit_rate": 0.5193333333333333,
+          "metadata_stale_rate": 0.01700898587933248,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 5.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": 0.8166666666666667
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=aimd, knob=(a=0.25, b=0.5, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.22683333333333333, \"stale_rate\": 0.055841293166789124, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 10.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.226833",
+          "predict_stale_rate": "0.055841",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 0.25,
+            "b": 0.5,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.22683333333333333,
+          "metadata_stale_rate": 0.055841293166789124,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 10.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=aimd, knob=(a=0.25, b=0.7, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.231, \"stale_rate\": 0.07287157287157287, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.231000",
+          "predict_stale_rate": "0.072872",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 0.25,
+            "b": 0.7,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.231,
+          "metadata_stale_rate": 0.07287157287157287,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=freshcache, knob=(error_budget=0.35), n_calls=6000",
+          "output": "{\"hit_rate\": 0.4573333333333333, \"stale_rate\": 0.130466472303207, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 5.0, \"calibrated_fraction\": 0.5833333333333334}",
+          "predict_hit_rate": "0.457333",
+          "predict_stale_rate": "0.130466",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "freshcache",
+          "metadata_knob": {
+            "error_budget": 0.35
+          },
+          "metadata_hit_rate": 0.4573333333333333,
+          "metadata_stale_rate": 0.130466472303207,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 5.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": 0.5833333333333334
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=aimd, knob=(a=0.5, b=0.5, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.26716666666666666, \"stale_rate\": 0.08484092326887087, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.267167",
+          "predict_stale_rate": "0.084841",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 0.5,
+            "b": 0.5,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.26716666666666666,
+          "metadata_stale_rate": 0.08484092326887087,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=aimd, knob=(a=0.5, b=0.3, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.25216666666666665, \"stale_rate\": 0.07270323859881031, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 15.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.252167",
+          "predict_stale_rate": "0.072703",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 0.5,
+            "b": 0.3,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.25216666666666665,
+          "metadata_stale_rate": 0.07270323859881031,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 15.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=aimd, knob=(a=0.5, b=0.7, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.2798333333333333, \"stale_rate\": 0.10541989279332936, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 17.5, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.279833",
+          "predict_stale_rate": "0.105420",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 0.5,
+            "b": 0.7,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.2798333333333333,
+          "metadata_stale_rate": 0.10541989279332936,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 17.5,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=aimd, knob=(a=1.0, b=0.3, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.2946666666666667, \"stale_rate\": 0.09502262443438914, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 14.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.294667",
+          "predict_stale_rate": "0.095023",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 1.0,
+            "b": 0.3,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.2946666666666667,
+          "metadata_stale_rate": 0.09502262443438914,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 14.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=aimd, knob=(a=1.0, b=0.5, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.31516666666666665, \"stale_rate\": 0.12162876784769963, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 18.5, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.315167",
+          "predict_stale_rate": "0.121629",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 1.0,
+            "b": 0.5,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.31516666666666665,
+          "metadata_stale_rate": 0.12162876784769963,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 18.5,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=aimd, knob=(a=1.0, b=0.7, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.3001666666666667, \"stale_rate\": 0.13548028872848417, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 17.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.300167",
+          "predict_stale_rate": "0.135480",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 1.0,
+            "b": 0.7,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.3001666666666667,
+          "metadata_stale_rate": 0.13548028872848417,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 17.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=aimd, knob=(a=2.0, b=0.3, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.3471666666666667, \"stale_rate\": 0.13490158425348056, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 9.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.347167",
+          "predict_stale_rate": "0.134902",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 2.0,
+            "b": 0.3,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.3471666666666667,
+          "metadata_stale_rate": 0.13490158425348056,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 9.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=aimd, knob=(a=2.0, b=0.7, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.39716666666666667, \"stale_rate\": 0.17666806546370123, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 14.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.397167",
+          "predict_stale_rate": "0.176668",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 2.0,
+            "b": 0.7,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.39716666666666667,
+          "metadata_stale_rate": 0.17666806546370123,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 14.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=aimd, knob=(a=2.0, b=0.5, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.3576666666666667, \"stale_rate\": 0.16216216216216217, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 18.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.357667",
+          "predict_stale_rate": "0.162162",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 2.0,
+            "b": 0.5,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.3576666666666667,
+          "metadata_stale_rate": 0.16216216216216217,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 18.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=fixed_ttl, knob=(ttl=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.0, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.000000",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "fixed_ttl",
+          "metadata_knob": {
+            "ttl": 0.0
+          },
+          "metadata_hit_rate": 0.0,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=fixed_ttl, knob=(ttl=0.5), n_calls=6000",
+          "output": "{\"hit_rate\": 0.1135, \"stale_rate\": 0.06607929515418502, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.113500",
+          "predict_stale_rate": "0.066079",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "fixed_ttl",
+          "metadata_knob": {
+            "ttl": 0.5
+          },
+          "metadata_hit_rate": 0.1135,
+          "metadata_stale_rate": 0.06607929515418502,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=freshcache_pooled, knob=(error_budget=0.05), n_calls=6000",
+          "output": "{\"hit_rate\": 0.2831666666666667, \"stale_rate\": 0.022954679223072396, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 5.0, \"calibrated_fraction\": 0.4666666666666667}",
+          "predict_hit_rate": "0.283167",
+          "predict_stale_rate": "0.022955",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "freshcache_pooled",
+          "metadata_knob": {
+            "error_budget": 0.05
+          },
+          "metadata_hit_rate": 0.2831666666666667,
+          "metadata_stale_rate": 0.022954679223072396,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 5.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": 0.4666666666666667
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=fixed_ttl, knob=(ttl=1), n_calls=6000",
+          "output": "{\"hit_rate\": 0.192, \"stale_rate\": 0.1328125, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.192000",
+          "predict_stale_rate": "0.132812",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "fixed_ttl",
+          "metadata_knob": {
+            "ttl": 1
+          },
+          "metadata_hit_rate": 0.192,
+          "metadata_stale_rate": 0.1328125,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=fixed_ttl, knob=(ttl=2), n_calls=6000",
+          "output": "{\"hit_rate\": 0.29033333333333333, \"stale_rate\": 0.25143513203214696, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.290333",
+          "predict_stale_rate": "0.251435",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "fixed_ttl",
+          "metadata_knob": {
+            "ttl": 2
+          },
+          "metadata_hit_rate": 0.29033333333333333,
+          "metadata_stale_rate": 0.25143513203214696,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=fixed_ttl, knob=(ttl=4), n_calls=6000",
+          "output": "{\"hit_rate\": 0.396, \"stale_rate\": 0.4036195286195286, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.396000",
+          "predict_stale_rate": "0.403620",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "fixed_ttl",
+          "metadata_knob": {
+            "ttl": 4
+          },
+          "metadata_hit_rate": 0.396,
+          "metadata_stale_rate": 0.4036195286195286,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=freshcache_pooled, knob=(error_budget=0.1), n_calls=6000",
+          "output": "{\"hit_rate\": 0.3635, \"stale_rate\": 0.037138927097661624, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 5.0, \"calibrated_fraction\": 0.6}",
+          "predict_hit_rate": "0.363500",
+          "predict_stale_rate": "0.037139",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "freshcache_pooled",
+          "metadata_knob": {
+            "error_budget": 0.1
+          },
+          "metadata_hit_rate": 0.3635,
+          "metadata_stale_rate": 0.037138927097661624,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 5.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": 0.6
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=fixed_ttl, knob=(ttl=8), n_calls=6000",
+          "output": "{\"hit_rate\": 0.5093333333333333, \"stale_rate\": 0.569044502617801, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.509333",
+          "predict_stale_rate": "0.569045",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "fixed_ttl",
+          "metadata_knob": {
+            "ttl": 8
+          },
+          "metadata_hit_rate": 0.5093333333333333,
+          "metadata_stale_rate": 0.569044502617801,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=fixed_ttl, knob=(ttl=16), n_calls=6000",
+          "output": "{\"hit_rate\": 0.618, \"stale_rate\": 0.6850053937432579, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.618000",
+          "predict_stale_rate": "0.685005",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "fixed_ttl",
+          "metadata_knob": {
+            "ttl": 16
+          },
+          "metadata_hit_rate": 0.618,
+          "metadata_stale_rate": 0.6850053937432579,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=freshcache_pooled, knob=(error_budget=0.1), n_calls=6000",
+          "output": "{\"hit_rate\": 0.6643333333333333, \"stale_rate\": 0.014801806322127445, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 5.0, \"calibrated_fraction\": 0.9}",
+          "predict_hit_rate": "0.664333",
+          "predict_stale_rate": "0.014802",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "freshcache_pooled",
+          "metadata_knob": {
+            "error_budget": 0.1
+          },
+          "metadata_hit_rate": 0.6643333333333333,
+          "metadata_stale_rate": 0.014801806322127445,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 5.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": 0.9
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=fixed_ttl, knob=(ttl=32), n_calls=6000",
+          "output": "{\"hit_rate\": 0.7118333333333333, \"stale_rate\": 0.7417466635448373, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.711833",
+          "predict_stale_rate": "0.741747",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "fixed_ttl",
+          "metadata_knob": {
+            "ttl": 32
+          },
+          "metadata_hit_rate": 0.7118333333333333,
+          "metadata_stale_rate": 0.7417466635448373,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=fixed_ttl, knob=(ttl=1000000.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.99, \"stale_rate\": 0.8412457912457912, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.990000",
+          "predict_stale_rate": "0.841246",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "fixed_ttl",
+          "metadata_knob": {
+            "ttl": 1000000.0
+          },
+          "metadata_hit_rate": 0.99,
+          "metadata_stale_rate": 0.8412457912457912,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=d_ttl, knob=(h_target=0.5, c=0.5), n_calls=6000",
+          "output": "{\"hit_rate\": 0.07083333333333333, \"stale_rate\": 0.04941176470588235, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 2.5, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.070833",
+          "predict_stale_rate": "0.049412",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.5,
+            "c": 0.5
+          },
+          "metadata_hit_rate": 0.07083333333333333,
+          "metadata_stale_rate": 0.04941176470588235,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 2.5,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=d_ttl, knob=(h_target=0.5, c=1.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.02, \"stale_rate\": 0.058333333333333334, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 17.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.020000",
+          "predict_stale_rate": "0.058333",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.5,
+            "c": 1.0
+          },
+          "metadata_hit_rate": 0.02,
+          "metadata_stale_rate": 0.058333333333333334,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 17.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=d_ttl, knob=(h_target=0.5, c=2.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.0095, \"stale_rate\": 0.07017543859649122, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 10.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.009500",
+          "predict_stale_rate": "0.070175",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.5,
+            "c": 2.0
+          },
+          "metadata_hit_rate": 0.0095,
+          "metadata_stale_rate": 0.07017543859649122,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 10.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=d_ttl, knob=(h_target=0.6, c=0.5), n_calls=6000",
+          "output": "{\"hit_rate\": 0.035, \"stale_rate\": 0.04285714285714286, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 46.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.035000",
+          "predict_stale_rate": "0.042857",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.6,
+            "c": 0.5
+          },
+          "metadata_hit_rate": 0.035,
+          "metadata_stale_rate": 0.04285714285714286,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 46.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=d_ttl, knob=(h_target=0.6, c=1.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.0105, \"stale_rate\": 0.047619047619047616, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 14.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.010500",
+          "predict_stale_rate": "0.047619",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.6,
+            "c": 1.0
+          },
+          "metadata_hit_rate": 0.0105,
+          "metadata_stale_rate": 0.047619047619047616,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 14.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=d_ttl, knob=(h_target=0.6, c=2.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.0035, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 9.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.003500",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.6,
+            "c": 2.0
+          },
+          "metadata_hit_rate": 0.0035,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 9.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=d_ttl, knob=(h_target=0.7, c=0.5), n_calls=6000",
+          "output": "{\"hit_rate\": 0.023, \"stale_rate\": 0.043478260869565216, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 31.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.023000",
+          "predict_stale_rate": "0.043478",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.7,
+            "c": 0.5
+          },
+          "metadata_hit_rate": 0.023,
+          "metadata_stale_rate": 0.043478260869565216,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 31.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=freshcache_pooled, knob=(error_budget=0.2), n_calls=6000",
+          "output": "{\"hit_rate\": 0.7423333333333333, \"stale_rate\": 0.028064660978895376, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 5.0, \"calibrated_fraction\": 0.9166666666666666}",
+          "predict_hit_rate": "0.742333",
+          "predict_stale_rate": "0.028065",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "freshcache_pooled",
+          "metadata_knob": {
+            "error_budget": 0.2
+          },
+          "metadata_hit_rate": 0.7423333333333333,
+          "metadata_stale_rate": 0.028064660978895376,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 5.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": 0.9166666666666666
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=freshcache_pooled, knob=(error_budget=0.2), n_calls=6000",
+          "output": "{\"hit_rate\": 0.487, \"stale_rate\": 0.058521560574948665, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 5.0, \"calibrated_fraction\": 0.6833333333333333}",
+          "predict_hit_rate": "0.487000",
+          "predict_stale_rate": "0.058522",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "freshcache_pooled",
+          "metadata_knob": {
+            "error_budget": 0.2
+          },
+          "metadata_hit_rate": 0.487,
+          "metadata_stale_rate": 0.058521560574948665,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 5.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": 0.6833333333333333
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=d_ttl, knob=(h_target=0.7, c=1.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.006, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 12.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.006000",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.7,
+            "c": 1.0
+          },
+          "metadata_hit_rate": 0.006,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 12.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=d_ttl, knob=(h_target=0.7, c=2.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.0031666666666666666, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 9.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.003167",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.7,
+            "c": 2.0
+          },
+          "metadata_hit_rate": 0.0031666666666666666,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 9.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=d_ttl, knob=(h_target=0.8, c=0.5), n_calls=6000",
+          "output": "{\"hit_rate\": 0.014, \"stale_rate\": 0.08333333333333333, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 24.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.014000",
+          "predict_stale_rate": "0.083333",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.8,
+            "c": 0.5
+          },
+          "metadata_hit_rate": 0.014,
+          "metadata_stale_rate": 0.08333333333333333,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 24.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=d_ttl, knob=(h_target=0.8, c=1.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.004666666666666667, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 11.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.004667",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.8,
+            "c": 1.0
+          },
+          "metadata_hit_rate": 0.004666666666666667,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 11.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=d_ttl, knob=(h_target=0.8, c=2.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.0026666666666666666, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 9.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.002667",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.8,
+            "c": 2.0
+          },
+          "metadata_hit_rate": 0.0026666666666666666,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 9.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=low_volatility, policy_family=freshcache_pooled, knob=(error_budget=0.35), n_calls=6000",
+          "output": "{\"hit_rate\": 0.7916666666666666, \"stale_rate\": 0.040842105263157895, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 5.0, \"calibrated_fraction\": 0.9166666666666666}",
+          "predict_hit_rate": "0.791667",
+          "predict_stale_rate": "0.040842",
+          "metadata_regime": "low_volatility",
+          "metadata_policy_family": "freshcache_pooled",
+          "metadata_knob": {
+            "error_budget": 0.35
+          },
+          "metadata_hit_rate": 0.7916666666666666,
+          "metadata_stale_rate": 0.040842105263157895,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 5.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": 0.9166666666666666
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=d_ttl, knob=(h_target=0.9, c=0.5), n_calls=6000",
+          "output": "{\"hit_rate\": 0.009833333333333333, \"stale_rate\": 0.06779661016949153, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 20.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.009833",
+          "predict_stale_rate": "0.067797",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.9,
+            "c": 0.5
+          },
+          "metadata_hit_rate": 0.009833333333333333,
+          "metadata_stale_rate": 0.06779661016949153,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 20.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=d_ttl, knob=(h_target=0.9, c=1.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.004166666666666667, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 11.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.004167",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.9,
+            "c": 1.0
+          },
+          "metadata_hit_rate": 0.004166666666666667,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 11.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=d_ttl, knob=(h_target=0.9, c=2.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.0025, \"stale_rate\": 0.0, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 9.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.002500",
+          "predict_stale_rate": "0.000000",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "d_ttl",
+          "metadata_knob": {
+            "h_target": 0.9,
+            "c": 2.0
+          },
+          "metadata_hit_rate": 0.0025,
+          "metadata_stale_rate": 0.0,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 9.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=ewma_ttl, knob=(h_target=0.5, step=0.1), n_calls=6000",
+          "output": "{\"hit_rate\": 0.2886666666666667, \"stale_rate\": 0.2684757505773672, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 7.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.288667",
+          "predict_stale_rate": "0.268476",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "ewma_ttl",
+          "metadata_knob": {
+            "h_target": 0.5,
+            "step": 0.1
+          },
+          "metadata_hit_rate": 0.2886666666666667,
+          "metadata_stale_rate": 0.2684757505773672,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 7.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=ewma_ttl, knob=(h_target=0.5, step=0.2), n_calls=6000",
+          "output": "{\"hit_rate\": 0.3235, \"stale_rate\": 0.312210200927357, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 5.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.323500",
+          "predict_stale_rate": "0.312210",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "ewma_ttl",
+          "metadata_knob": {
+            "h_target": 0.5,
+            "step": 0.2
+          },
+          "metadata_hit_rate": 0.3235,
+          "metadata_stale_rate": 0.312210200927357,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 5.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=medium_volatility, policy_family=freshcache_pooled, knob=(error_budget=0.35), n_calls=6000",
+          "output": "{\"hit_rate\": 0.5636666666666666, \"stale_rate\": 0.09195742164399763, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 5.0, \"calibrated_fraction\": 0.8}",
+          "predict_hit_rate": "0.563667",
+          "predict_stale_rate": "0.091957",
+          "metadata_regime": "medium_volatility",
+          "metadata_policy_family": "freshcache_pooled",
+          "metadata_knob": {
+            "error_budget": 0.35
+          },
+          "metadata_hit_rate": 0.5636666666666666,
+          "metadata_stale_rate": 0.09195742164399763,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 5.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": 0.8
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=ewma_ttl, knob=(h_target=0.7, step=0.2), n_calls=6000",
+          "output": "{\"hit_rate\": 0.40166666666666667, \"stale_rate\": 0.4340248962655602, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 7.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.401667",
+          "predict_stale_rate": "0.434025",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "ewma_ttl",
+          "metadata_knob": {
+            "h_target": 0.7,
+            "step": 0.2
+          },
+          "metadata_hit_rate": 0.40166666666666667,
+          "metadata_stale_rate": 0.4340248962655602,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 7.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=ewma_ttl, knob=(h_target=0.7, step=0.1), n_calls=6000",
+          "output": "{\"hit_rate\": 0.3486666666666667, \"stale_rate\": 0.34130019120458893, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 9.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.348667",
+          "predict_stale_rate": "0.341300",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "ewma_ttl",
+          "metadata_knob": {
+            "h_target": 0.7,
+            "step": 0.1
+          },
+          "metadata_hit_rate": 0.3486666666666667,
+          "metadata_stale_rate": 0.34130019120458893,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 9.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=ewma_ttl, knob=(h_target=0.9, step=0.2), n_calls=6000",
+          "output": "{\"hit_rate\": 0.4615, \"stale_rate\": 0.5196821957385338, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 9.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.461500",
+          "predict_stale_rate": "0.519682",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "ewma_ttl",
+          "metadata_knob": {
+            "h_target": 0.9,
+            "step": 0.2
+          },
+          "metadata_hit_rate": 0.4615,
+          "metadata_stale_rate": 0.5196821957385338,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 9.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=ewma_ttl, knob=(h_target=0.9, step=0.1), n_calls=6000",
+          "output": "{\"hit_rate\": 0.395, \"stale_rate\": 0.4345991561181435, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 7.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.395000",
+          "predict_stale_rate": "0.434599",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "ewma_ttl",
+          "metadata_knob": {
+            "h_target": 0.9,
+            "step": 0.1
+          },
+          "metadata_hit_rate": 0.395,
+          "metadata_stale_rate": 0.4345991561181435,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 7.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=freshcache, knob=(error_budget=0.05), n_calls=6000",
+          "output": "{\"hit_rate\": 0.154, \"stale_rate\": 0.07575757575757576, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 5.0, \"calibrated_fraction\": 0.15}",
+          "predict_hit_rate": "0.154000",
+          "predict_stale_rate": "0.075758",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "freshcache",
+          "metadata_knob": {
+            "error_budget": 0.05
+          },
+          "metadata_hit_rate": 0.154,
+          "metadata_stale_rate": 0.07575757575757576,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 5.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": 0.15
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=freshcache, knob=(error_budget=0.1), n_calls=6000",
+          "output": "{\"hit_rate\": 0.21033333333333334, \"stale_rate\": 0.10935023771790808, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 5.0, \"calibrated_fraction\": 0.31666666666666665}",
+          "predict_hit_rate": "0.210333",
+          "predict_stale_rate": "0.109350",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "freshcache",
+          "metadata_knob": {
+            "error_budget": 0.1
+          },
+          "metadata_hit_rate": 0.21033333333333334,
+          "metadata_stale_rate": 0.10935023771790808,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 5.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": 0.31666666666666665
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=aimd, knob=(a=0.25, b=0.3, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.206, \"stale_rate\": 0.13592233009708737, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 9.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.206000",
+          "predict_stale_rate": "0.135922",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 0.25,
+            "b": 0.3,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.206,
+          "metadata_stale_rate": 0.13592233009708737,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 9.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=aimd, knob=(a=0.25, b=0.5, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.23666666666666666, \"stale_rate\": 0.14929577464788732, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": null, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.236667",
+          "predict_stale_rate": "0.149296",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 0.25,
+            "b": 0.5,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.23666666666666666,
+          "metadata_stale_rate": 0.14929577464788732,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": null,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=aimd, knob=(a=0.25, b=0.7, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.2505, \"stale_rate\": 0.16167664670658682, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 14.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.250500",
+          "predict_stale_rate": "0.161677",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 0.25,
+            "b": 0.7,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.2505,
+          "metadata_stale_rate": 0.16167664670658682,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 14.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=aimd, knob=(a=0.5, b=0.3, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.23316666666666666, \"stale_rate\": 0.16082916368834882, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 12.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.233167",
+          "predict_stale_rate": "0.160829",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 0.5,
+            "b": 0.3,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.23316666666666666,
+          "metadata_stale_rate": 0.16082916368834882,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 12.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=aimd, knob=(a=0.5, b=0.5, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.26466666666666666, \"stale_rate\": 0.17821158690176322, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 12.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.264667",
+          "predict_stale_rate": "0.178212",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 0.5,
+            "b": 0.5,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.26466666666666666,
+          "metadata_stale_rate": 0.17821158690176322,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 12.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=freshcache, knob=(error_budget=0.2), n_calls=6000",
+          "output": "{\"hit_rate\": 0.2995, \"stale_rate\": 0.19699499165275458, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 5.0, \"calibrated_fraction\": 0.4166666666666667}",
+          "predict_hit_rate": "0.299500",
+          "predict_stale_rate": "0.196995",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "freshcache",
+          "metadata_knob": {
+            "error_budget": 0.2
+          },
+          "metadata_hit_rate": 0.2995,
+          "metadata_stale_rate": 0.19699499165275458,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 5.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": 0.4166666666666667
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=aimd, knob=(a=0.5, b=0.7, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.2801666666666667, \"stale_rate\": 0.2183224271267103, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 11.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.280167",
+          "predict_stale_rate": "0.218322",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 0.5,
+            "b": 0.7,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.2801666666666667,
+          "metadata_stale_rate": 0.2183224271267103,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 11.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=freshcache, knob=(error_budget=0.35), n_calls=6000",
+          "output": "{\"hit_rate\": 0.355, \"stale_rate\": 0.26666666666666666, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 5.0, \"calibrated_fraction\": 0.48333333333333334}",
+          "predict_hit_rate": "0.355000",
+          "predict_stale_rate": "0.266667",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "freshcache",
+          "metadata_knob": {
+            "error_budget": 0.35
+          },
+          "metadata_hit_rate": 0.355,
+          "metadata_stale_rate": 0.26666666666666666,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 5.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": 0.48333333333333334
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=aimd, knob=(a=1.0, b=0.3, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.27116666666666667, \"stale_rate\": 0.189920098340504, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 22.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.271167",
+          "predict_stale_rate": "0.189920",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 1.0,
+            "b": 0.3,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.27116666666666667,
+          "metadata_stale_rate": 0.189920098340504,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 22.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=aimd, knob=(a=1.0, b=0.5, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.3085, \"stale_rate\": 0.2479740680713128, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 18.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.308500",
+          "predict_stale_rate": "0.247974",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 1.0,
+            "b": 0.5,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.3085,
+          "metadata_stale_rate": 0.2479740680713128,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 18.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=aimd, knob=(a=1.0, b=0.7, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.317, \"stale_rate\": 0.2676130389064143, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 15.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.317000",
+          "predict_stale_rate": "0.267613",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 1.0,
+            "b": 0.7,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.317,
+          "metadata_stale_rate": 0.2676130389064143,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 15.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=aimd, knob=(a=2.0, b=0.3, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.31516666666666665, \"stale_rate\": 0.2659968270756214, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 55.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.315167",
+          "predict_stale_rate": "0.265997",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 2.0,
+            "b": 0.3,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.31516666666666665,
+          "metadata_stale_rate": 0.2659968270756214,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 55.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=freshcache_pooled, knob=(error_budget=0.05), n_calls=6000",
+          "output": "{\"hit_rate\": 0.16033333333333333, \"stale_rate\": 0.015592515592515593, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 5.0, \"calibrated_fraction\": 0.11666666666666667}",
+          "predict_hit_rate": "0.160333",
+          "predict_stale_rate": "0.015593",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "freshcache_pooled",
+          "metadata_knob": {
+            "error_budget": 0.05
+          },
+          "metadata_hit_rate": 0.16033333333333333,
+          "metadata_stale_rate": 0.015592515592515593,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 5.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": 0.11666666666666667
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=aimd, knob=(a=2.0, b=0.5, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.3435, \"stale_rate\": 0.27850557981562346, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 19.0, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.343500",
+          "predict_stale_rate": "0.278506",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 2.0,
+            "b": 0.5,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.3435,
+          "metadata_stale_rate": 0.27850557981562346,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 19.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=aimd, knob=(a=2.0, b=0.7, presumed_valid_weight=0.0), n_calls=6000",
+          "output": "{\"hit_rate\": 0.3596666666666667, \"stale_rate\": 0.3586654309545876, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 11.5, \"calibrated_fraction\": null}",
+          "predict_hit_rate": "0.359667",
+          "predict_stale_rate": "0.358665",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "aimd",
+          "metadata_knob": {
+            "a": 2.0,
+            "b": 0.7,
+            "presumed_valid_weight": 0.0
+          },
+          "metadata_hit_rate": 0.3596666666666667,
+          "metadata_stale_rate": 0.3586654309545876,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 11.5,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": null
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=freshcache_pooled, knob=(error_budget=0.1), n_calls=6000",
+          "output": "{\"hit_rate\": 0.2335, \"stale_rate\": 0.047109207708779445, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 5.0, \"calibrated_fraction\": 0.25}",
+          "predict_hit_rate": "0.233500",
+          "predict_stale_rate": "0.047109",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "freshcache_pooled",
+          "metadata_knob": {
+            "error_budget": 0.1
+          },
+          "metadata_hit_rate": 0.2335,
+          "metadata_stale_rate": 0.047109207708779445,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 5.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": 0.25
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=freshcache_pooled, knob=(error_budget=0.2), n_calls=6000",
+          "output": "{\"hit_rate\": 0.2733333333333333, \"stale_rate\": 0.08963414634146341, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 5.0, \"calibrated_fraction\": 0.36666666666666664}",
+          "predict_hit_rate": "0.273333",
+          "predict_stale_rate": "0.089634",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "freshcache_pooled",
+          "metadata_knob": {
+            "error_budget": 0.2
+          },
+          "metadata_hit_rate": 0.2733333333333333,
+          "metadata_stale_rate": 0.08963414634146341,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 5.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": 0.36666666666666664
+        },
+        {
+          "input": "AIMD-cache-simulation run: regime=high_volatility, policy_family=freshcache_pooled, knob=(error_budget=0.35), n_calls=6000",
+          "output": "{\"hit_rate\": 0.33566666666666667, \"stale_rate\": 0.1156901688182721, \"low_repeat_hit_rate\": 0.0, \"low_repeat_stale_rate\": 0.0, \"convergence_events_median\": 5.0, \"calibrated_fraction\": 0.45}",
+          "predict_hit_rate": "0.335667",
+          "predict_stale_rate": "0.115690",
+          "metadata_regime": "high_volatility",
+          "metadata_policy_family": "freshcache_pooled",
+          "metadata_knob": {
+            "error_budget": 0.35
+          },
+          "metadata_hit_rate": 0.33566666666666667,
+          "metadata_stale_rate": 0.1156901688182721,
+          "metadata_low_repeat_hit_rate": 0.0,
+          "metadata_low_repeat_stale_rate": 0.0,
+          "metadata_convergence_events_median": 5.0,
+          "metadata_n_low_repeat_sites": 0,
+          "metadata_calibrated_fraction": 0.45
+        }
+      ]
+    }
+  ]
+}

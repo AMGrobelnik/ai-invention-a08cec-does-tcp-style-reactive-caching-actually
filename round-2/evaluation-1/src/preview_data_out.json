@@ -1,0 +1,47 @@
+{
+  "metadata": {
+    "description": "Versioned Resource Corpus for Agent Cache Testing: real-content resources (documents/search-snippets/computed-values) with ground-truth version schedules over a 30-day simulated timeline, flattened to...",
+    "sim_days": 30,
+    "n_episodes": 30
+  },
+  "datasets": [
+    {
+      "dataset": "cache_corpus",
+      "examples": [
+        {
+          "input": "{\"episode_id\": \"ep_000\", \"call_index\": 0, \"timestamp_tick\": 1, \"call_site_signature\": \"web_search(query='What happens after you die? (Human Being)')\", \"resource_id\": \"snip_qqp_0109\"}",
+          "output": "snip_qqp_0109_v0",
+          "metadata_resource_class": "search_snippet",
+          "metadata_volatility_regime": "static",
+          "metadata_timing_provenance": "real_single_snapshot",
+          "metadata_content_now": "What happens after you die? (Human Being)",
+          "metadata_version_schedule": "[{\"version_id\": \"snip_qqp_0109_v0\", \"content_hash\": \"09ff427a59ee5644\", \"valid_from_tick\": 0, \"valid_until_tick\": 29}]",
+          "metadata_checked": false,
+          "metadata_sim_days": 30
+        },
+        {
+          "input": "{\"episode_id\": \"ep_000\", \"call_index\": 1, \"timestamp_tick\": 1, \"call_site_signature\": \"web_search(query='What happens when you die? (No religion)')\", \"resource_id\": \"snip_qqp_0109\"}",
+          "output": "snip_qqp_0109_v0",
+          "metadata_resource_class": "search_snippet",
+          "metadata_volatility_regime": "static",
+          "metadata_timing_provenance": "real_single_snapshot",
+          "metadata_content_now": "What happens after you die? (Human Being)",
+          "metadata_version_schedule": "[{\"version_id\": \"snip_qqp_0109_v0\", \"content_hash\": \"09ff427a59ee5644\", \"valid_from_tick\": 0, \"valid_until_tick\": 29}]",
+          "metadata_checked": false,
+          "metadata_sim_days": 30
+        },
+        {
+          "input": "{\"episode_id\": \"ep_000\", \"call_index\": 2, \"timestamp_tick\": 1, \"call_site_signature\": \"web_search(query='What happens when you die? (No religion)')\", \"resource_id\": \"snip_qqp_0109\"}",
+          "output": "snip_qqp_0109_v0",
+          "metadata_resource_class": "search_snippet",
+          "metadata_volatility_regime": "static",
+          "metadata_timing_provenance": "real_single_snapshot",
+          "metadata_content_now": "What happens after you die? (Human Being)",
+          "metadata_version_schedule": "[{\"version_id\": \"snip_qqp_0109_v0\", \"content_hash\": \"09ff427a59ee5644\", \"valid_from_tick\": 0, \"valid_until_tick\": 29}]",
+          "metadata_checked": false,
+          "metadata_sim_days": 30
+        }
+      ]
+    }
+  ]
+}

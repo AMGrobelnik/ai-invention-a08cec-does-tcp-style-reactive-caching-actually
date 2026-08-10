@@ -1,0 +1,32 @@
+{
+  "metadata": {
+    "evaluation_name": "aimd_pareto_convergence_evaluation",
+    "description": "Evaluation could not run: the upstream experiment artifact did not produce a per-call event log. This result documents that blocker rather than inventing metrics.",
+    "blocked_reason": "no candidate event-log files found under gen_art_experiment_1 or gen_art_dataset_1"
+  },
+  "metrics_agg": {
+    "data_available": 0.0,
+    "n_total_calls": 0.0,
+    "n_episodes": 0.0,
+    "n_policies": 0.0,
+    "n_volatility_regimes": 0.0,
+    "n_operating_points": 0.0,
+    "n_call_sites_evaluated_for_convergence": 0.0,
+    "criterion_a_pass": 0.0,
+    "criterion_b_pass": 0.0,
+    "overall_verdict_confirms": 0.0
+  },
+  "datasets": [
+    {
+      "dataset": "aimd_cache_experiment_call_log",
+      "examples": [
+        {
+          "input": "aimd_cache_experiment_call_log",
+          "output": "{\"status\": \"BLOCKED_NO_DATA\", \"reason\": \"no candidate event-log files found under gen_art_experiment_1 or gen_art_dataset_1\", \"checked_paths\": [\"/ai-inventor/aii_data/runs/run_MmmgOkQFZ5uI/3_invention...",
+          "metadata_kind": "blocked_no_data",
+          "eval_data_available": 0.0
+        }
+      ]
+    }
+  ]
+}

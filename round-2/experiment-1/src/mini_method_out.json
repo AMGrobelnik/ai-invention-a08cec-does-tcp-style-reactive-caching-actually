@@ -1,0 +1,228 @@
+{
+  "metadata": {
+    "description": "Cache-policy replay comparison (fixed TTL, d-TTL, EWMA-adaptive, FreshCache raw+pooled, AIMD) over the real versioned-resource corpus (art_T0onLH9xokqw) and an explicit synthetic Zipf-popularity simulator run side-by-side. Each example is one (data_source, policy, knob, spot_check_rate, seed) replicate's aggregate hit-rate / staleness metrics.",
+    "policies_and_knobs": {
+      "fixed_ttl": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "d_ttl": [
+        0.5,
+        0.7,
+        0.9
+      ],
+      "ewma_adaptive": [
+        0.1,
+        0.3,
+        0.5
+      ],
+      "freshcache_raw": [
+        0.1,
+        0.2,
+        0.35
+      ],
+      "freshcache_pooled": [
+        0.1,
+        0.2,
+        0.35
+      ],
+      "aimd": [
+        [
+          0.1,
+          0.5
+        ],
+        [
+          0.1,
+          0.7
+        ],
+        [
+          0.1,
+          0.9
+        ],
+        [
+          0.25,
+          0.5
+        ],
+        [
+          0.25,
+          0.7
+        ],
+        [
+          0.25,
+          0.9
+        ],
+        [
+          0.5,
+          0.5
+        ],
+        [
+          0.5,
+          0.7
+        ],
+        [
+          0.5,
+          0.9
+        ]
+      ]
+    },
+    "n_replicates": 20,
+    "spot_check_rates_tested": [
+      0.1,
+      0.2,
+      0.4
+    ],
+    "headline_spot_check_rate": 0.2,
+    "data_sources": [
+      "real_corpus",
+      "synthetic_zipf"
+    ],
+    "dependency_verified": {
+      "path": "/ai-inventor/aii_data/runs/run_MmmgOkQFZ5uI/3_invention_loop/iter_1/gen_art/gen_art_dataset_1/full_data_out.json",
+      "n_rows_loaded": 5307
+    },
+    "n_cells": 88,
+    "n_total_replicate_rows": 1760,
+    "mode": "full"
+  },
+  "datasets": [
+    {
+      "dataset": "cache_policy_replay_real_corpus",
+      "examples": [
+        {
+          "input": "{\"data_source\": \"real_corpus\", \"policy_name\": \"fixed_ttl\", \"knob_value\": 1, \"spot_check_rate\": 0.2, \"seed\": 0, \"n_episodes\": 30, \"n_calls\": 5307}",
+          "output": "{\"hit_rate\": 0.6947427925381572, \"stale_rate_of_served\": 0.11282885815025766, \"mean_adapted_param\": 1.0}",
+          "metadata_policy_name": "fixed_ttl",
+          "metadata_knob_value": "1",
+          "metadata_data_source": "real_corpus",
+          "metadata_spot_check_rate": 0.2,
+          "metadata_seed": 0,
+          "metadata_n_calls": 5307,
+          "metadata_n_served_from_cache": 3687,
+          "metadata_hit_rate": 0.6947427925381572,
+          "metadata_n_stale_served": 416,
+          "metadata_stale_rate_of_served": 0.11282885815025766,
+          "metadata_stale_rate_of_calls": 0.07838703599020162,
+          "metadata_n_spot_checked": 1041,
+          "metadata_mean_adapted_param": 1.0,
+          "metadata_redundant_calls_avoided": 3687,
+          "metadata_regime_breakdown": "{\"static\": {\"n\": 4226, \"hit_rate\": 0.6644581164221486, \"stale_rate_of_served\": 0.002492877492877493}, \"periodic\": {\"n\": 995, \"hit_rate\": 0.8140703517587939, \"stale_rate_of_served\": 0.4604938271604938}, \"bursty\": {\"n\": 86, \"hit_rate\": 0.8023255813953488, \"stale_rate_of_served\": 0.5217391304347826}}",
+          "metadata_is_baseline": true,
+          "predict_fixed_ttl": "{\"hit_rate\": 0.6947427925381572, \"stale_rate_of_served\": 0.11282885815025766, \"mean_adapted_param\": 1.0}"
+        },
+        {
+          "input": "{\"data_source\": \"real_corpus\", \"policy_name\": \"fixed_ttl\", \"knob_value\": 1, \"spot_check_rate\": 0.2, \"seed\": 1, \"n_episodes\": 30, \"n_calls\": 5307}",
+          "output": "{\"hit_rate\": 0.6947427925381572, \"stale_rate_of_served\": 0.11282885815025766, \"mean_adapted_param\": 1.0}",
+          "metadata_policy_name": "fixed_ttl",
+          "metadata_knob_value": "1",
+          "metadata_data_source": "real_corpus",
+          "metadata_spot_check_rate": 0.2,
+          "metadata_seed": 1,
+          "metadata_n_calls": 5307,
+          "metadata_n_served_from_cache": 3687,
+          "metadata_hit_rate": 0.6947427925381572,
+          "metadata_n_stale_served": 416,
+          "metadata_stale_rate_of_served": 0.11282885815025766,
+          "metadata_stale_rate_of_calls": 0.07838703599020162,
+          "metadata_n_spot_checked": 1059,
+          "metadata_mean_adapted_param": 1.0,
+          "metadata_redundant_calls_avoided": 3687,
+          "metadata_regime_breakdown": "{\"static\": {\"n\": 4226, \"hit_rate\": 0.6644581164221486, \"stale_rate_of_served\": 0.002492877492877493}, \"periodic\": {\"n\": 995, \"hit_rate\": 0.8140703517587939, \"stale_rate_of_served\": 0.4604938271604938}, \"bursty\": {\"n\": 86, \"hit_rate\": 0.8023255813953488, \"stale_rate_of_served\": 0.5217391304347826}}",
+          "metadata_is_baseline": true,
+          "predict_fixed_ttl": "{\"hit_rate\": 0.6947427925381572, \"stale_rate_of_served\": 0.11282885815025766, \"mean_adapted_param\": 1.0}"
+        },
+        {
+          "input": "{\"data_source\": \"real_corpus\", \"policy_name\": \"fixed_ttl\", \"knob_value\": 1, \"spot_check_rate\": 0.2, \"seed\": 2, \"n_episodes\": 30, \"n_calls\": 5307}",
+          "output": "{\"hit_rate\": 0.6947427925381572, \"stale_rate_of_served\": 0.11282885815025766, \"mean_adapted_param\": 1.0}",
+          "metadata_policy_name": "fixed_ttl",
+          "metadata_knob_value": "1",
+          "metadata_data_source": "real_corpus",
+          "metadata_spot_check_rate": 0.2,
+          "metadata_seed": 2,
+          "metadata_n_calls": 5307,
+          "metadata_n_served_from_cache": 3687,
+          "metadata_hit_rate": 0.6947427925381572,
+          "metadata_n_stale_served": 416,
+          "metadata_stale_rate_of_served": 0.11282885815025766,
+          "metadata_stale_rate_of_calls": 0.07838703599020162,
+          "metadata_n_spot_checked": 1043,
+          "metadata_mean_adapted_param": 1.0,
+          "metadata_redundant_calls_avoided": 3687,
+          "metadata_regime_breakdown": "{\"static\": {\"n\": 4226, \"hit_rate\": 0.6644581164221486, \"stale_rate_of_served\": 0.002492877492877493}, \"periodic\": {\"n\": 995, \"hit_rate\": 0.8140703517587939, \"stale_rate_of_served\": 0.4604938271604938}, \"bursty\": {\"n\": 86, \"hit_rate\": 0.8023255813953488, \"stale_rate_of_served\": 0.5217391304347826}}",
+          "metadata_is_baseline": true,
+          "predict_fixed_ttl": "{\"hit_rate\": 0.6947427925381572, \"stale_rate_of_served\": 0.11282885815025766, \"mean_adapted_param\": 1.0}"
+        }
+      ]
+    },
+    {
+      "dataset": "cache_policy_replay_synthetic_zipf",
+      "examples": [
+        {
+          "input": "{\"data_source\": \"synthetic_zipf\", \"policy_name\": \"fixed_ttl\", \"knob_value\": 1, \"spot_check_rate\": 0.2, \"seed\": 0, \"n_episodes\": 30, \"n_calls\": 1626}",
+          "output": "{\"hit_rate\": 0.7152521525215252, \"stale_rate_of_served\": 0.01117798796216681, \"mean_adapted_param\": 1.0}",
+          "metadata_policy_name": "fixed_ttl",
+          "metadata_knob_value": "1",
+          "metadata_data_source": "synthetic_zipf",
+          "metadata_spot_check_rate": 0.2,
+          "metadata_seed": 0,
+          "metadata_n_calls": 1626,
+          "metadata_n_served_from_cache": 1163,
+          "metadata_hit_rate": 0.7152521525215252,
+          "metadata_n_stale_served": 13,
+          "metadata_stale_rate_of_served": 0.01117798796216681,
+          "metadata_stale_rate_of_calls": 0.007995079950799507,
+          "metadata_n_spot_checked": 327,
+          "metadata_mean_adapted_param": 1.0,
+          "metadata_redundant_calls_avoided": 1163,
+          "metadata_regime_breakdown": "{\"static\": {\"n\": 1511, \"hit_rate\": 0.7511581733951026, \"stale_rate_of_served\": 0.0}, \"periodic\": {\"n\": 91, \"hit_rate\": 0.25274725274725274, \"stale_rate_of_served\": 0.34782608695652173}, \"bursty\": {\"n\": 24, \"hit_rate\": 0.20833333333333334, \"stale_rate_of_served\": 1.0}}",
+          "metadata_is_baseline": true,
+          "predict_fixed_ttl": "{\"hit_rate\": 0.7152521525215252, \"stale_rate_of_served\": 0.01117798796216681, \"mean_adapted_param\": 1.0}"
+        },
+        {
+          "input": "{\"data_source\": \"synthetic_zipf\", \"policy_name\": \"fixed_ttl\", \"knob_value\": 1, \"spot_check_rate\": 0.2, \"seed\": 1, \"n_episodes\": 30, \"n_calls\": 1626}",
+          "output": "{\"hit_rate\": 0.7152521525215252, \"stale_rate_of_served\": 0.01117798796216681, \"mean_adapted_param\": 1.0}",
+          "metadata_policy_name": "fixed_ttl",
+          "metadata_knob_value": "1",
+          "metadata_data_source": "synthetic_zipf",
+          "metadata_spot_check_rate": 0.2,
+          "metadata_seed": 1,
+          "metadata_n_calls": 1626,
+          "metadata_n_served_from_cache": 1163,
+          "metadata_hit_rate": 0.7152521525215252,
+          "metadata_n_stale_served": 13,
+          "metadata_stale_rate_of_served": 0.01117798796216681,
+          "metadata_stale_rate_of_calls": 0.007995079950799507,
+          "metadata_n_spot_checked": 303,
+          "metadata_mean_adapted_param": 1.0,
+          "metadata_redundant_calls_avoided": 1163,
+          "metadata_regime_breakdown": "{\"static\": {\"n\": 1511, \"hit_rate\": 0.7511581733951026, \"stale_rate_of_served\": 0.0}, \"periodic\": {\"n\": 91, \"hit_rate\": 0.25274725274725274, \"stale_rate_of_served\": 0.34782608695652173}, \"bursty\": {\"n\": 24, \"hit_rate\": 0.20833333333333334, \"stale_rate_of_served\": 1.0}}",
+          "metadata_is_baseline": true,
+          "predict_fixed_ttl": "{\"hit_rate\": 0.7152521525215252, \"stale_rate_of_served\": 0.01117798796216681, \"mean_adapted_param\": 1.0}"
+        },
+        {
+          "input": "{\"data_source\": \"synthetic_zipf\", \"policy_name\": \"fixed_ttl\", \"knob_value\": 1, \"spot_check_rate\": 0.2, \"seed\": 2, \"n_episodes\": 30, \"n_calls\": 1626}",
+          "output": "{\"hit_rate\": 0.7152521525215252, \"stale_rate_of_served\": 0.01117798796216681, \"mean_adapted_param\": 1.0}",
+          "metadata_policy_name": "fixed_ttl",
+          "metadata_knob_value": "1",
+          "metadata_data_source": "synthetic_zipf",
+          "metadata_spot_check_rate": 0.2,
+          "metadata_seed": 2,
+          "metadata_n_calls": 1626,
+          "metadata_n_served_from_cache": 1163,
+          "metadata_hit_rate": 0.7152521525215252,
+          "metadata_n_stale_served": 13,
+          "metadata_stale_rate_of_served": 0.01117798796216681,
+          "metadata_stale_rate_of_calls": 0.007995079950799507,
+          "metadata_n_spot_checked": 314,
+          "metadata_mean_adapted_param": 1.0,
+          "metadata_redundant_calls_avoided": 1163,
+          "metadata_regime_breakdown": "{\"static\": {\"n\": 1511, \"hit_rate\": 0.7511581733951026, \"stale_rate_of_served\": 0.0}, \"periodic\": {\"n\": 91, \"hit_rate\": 0.25274725274725274, \"stale_rate_of_served\": 0.34782608695652173}, \"bursty\": {\"n\": 24, \"hit_rate\": 0.20833333333333334, \"stale_rate_of_served\": 1.0}}",
+          "metadata_is_baseline": true,
+          "predict_fixed_ttl": "{\"hit_rate\": 0.7152521525215252, \"stale_rate_of_served\": 0.01117798796216681, \"mean_adapted_param\": 1.0}"
+        }
+      ]
+    }
+  ]
+}
