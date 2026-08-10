@@ -1,0 +1,61 @@
+{
+  "figure_id": "fig_frontier",
+  "title": "Real Corpus: Hit Rate vs Stale Rate by Policy Family",
+  "note": "Rendered with make_fig_frontier.py (hand-written matplotlib using chart_style house-style helpers) rather than chart_gen.py's built-in pareto type, because the pareto renderer computes a Pareto frontier per-series and this figure needs a single frontier computed jointly across all six series.",
+  "xlabel": "Stale rate of served hits",
+  "ylabel": "Cache hit rate",
+  "xlim": [0.08, 0.19],
+  "ylim": [0.65, 0.95],
+  "aspect": "16:9",
+  "caption": "Reduction-vs-staleness operating points for all six policy families on the real-content versioned corpus (mean over 20 replicate seeds at the 0.20 headline spot-check rate). AIMD's full 9-point knob grid is dominated outright by FreshCache (raw and pooled), and matched, not beaten, by the simpler EWMA-adaptive baseline.",
+  "series": [
+    {
+      "label": "Fixed TTL",
+      "marker": "circle",
+      "color": "gray",
+      "x": [0.113, 0.107, 0.124, 0.143, 0.173],
+      "y": [0.695, 0.774, 0.825, 0.868, 0.916]
+    },
+    {
+      "label": "d-TTL",
+      "marker": "triangle",
+      "color": "purple",
+      "x": [0.109, 0.110, 0.111],
+      "y": [0.721, 0.716, 0.707]
+    },
+    {
+      "label": "EWMA-adaptive",
+      "marker": "square",
+      "color": "yellow",
+      "x": [0.107, 0.106, 0.106],
+      "y": [0.799, 0.797, 0.797]
+    },
+    {
+      "label": "AIMD",
+      "marker": "diamond",
+      "color": "blue",
+      "emphasized": true,
+      "x": [0.106, 0.107, 0.109, 0.106, 0.107, 0.109, 0.106, 0.107, 0.109],
+      "y": [0.794, 0.795, 0.796, 0.795, 0.796, 0.797, 0.801, 0.802, 0.803]
+    },
+    {
+      "label": "FreshCache (raw)",
+      "marker": "star",
+      "color": "green",
+      "x": [0.112, 0.116, 0.121],
+      "y": [0.902, 0.903, 0.905]
+    },
+    {
+      "label": "FreshCache (pooled)",
+      "marker": "star",
+      "color": "dark_green",
+      "emphasized": true,
+      "x": [0.096, 0.101, 0.112],
+      "y": [0.898, 0.902, 0.906]
+    }
+  ],
+  "frontier": {
+    "type": "dashed",
+    "method": "global non-dominated (minimize stale rate, maximize hit rate) computed jointly across all six series"
+  }
+}

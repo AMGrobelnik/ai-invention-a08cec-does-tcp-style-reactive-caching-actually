@@ -1,0 +1,101 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyperFirstAtBeginDocument{\AtBeginDocument}
+\HyperFirstAtBeginDocument{\ifx\hyper@anchor\@undefined
+\global\let\oldnewlabel\newlabel
+\gdef\newlabel#1#2{\newlabelxx{#1}#2}
+\gdef\newlabelxx#1#2#3#4#5#6{\oldnewlabel{#1}{{#2}{#3}}}
+\AtEndDocument{\ifx\hyper@anchor\@undefined
+\let\newlabel\oldnewlabel
+\fi}
+\fi}
+\global\let\hyper@last\relax 
+\gdef\HyperFirstAtBeginDocument#1{#1}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
+\citation{Basu2017}
+\citation{Mansoor2026}
+\citation{Schroeder2025}
+\citation{ToolCacheAgent2026}
+\citation{Kumar2026}
+\citation{Jacobson1988,Chiu1989}
+\citation{Thoma2023,Cate1992,Fielding2014}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Per-call-site AIMD reuse-window control loop: a served, spot-checked cache hit that is confirmed valid grows the site's reuse window additively; a confirmed-stale hit collapses it multiplicatively, mirroring TCP congestion control's response to a loss event.}}{3}{figure.1}\protected@file@percent }
+\newlabel{fig:architecture}{{1}{3}{Per-call-site AIMD reuse-window control loop: a served, spot-checked cache hit that is confirmed valid grows the site's reuse window additively; a confirmed-stale hit collapses it multiplicatively, mirroring TCP congestion control's response to a loss event}{figure.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{Summary of Contributions}{3}{section*.1}\protected@file@percent }
+\citation{Basu2017}
+\citation{Mansoor2026}
+\citation{Schroeder2025}
+\citation{Bang2023}
+\citation{Li2024}
+\citation{ToolCacheAgent2026}
+\citation{Kumar2026}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related Work}{4}{section.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Hit-rate-targeted adaptive TTL.}{4}{section*.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Fitted probabilistic staleness gating.}{4}{section*.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Semantic and agent-specific tool caching.}{4}{section*.4}\protected@file@percent }
+\citation{Jacobson1988,Chiu1989}
+\citation{Thoma2023}
+\citation{Cate1992,Fielding2014}
+\citation{Chen2025}
+\@writefile{toc}{\contentsline {paragraph}{Congestion control as a reactive control law, and whether AIMD-for-TTL has been tried before.}{5}{section*.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Methods}{5}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Problem setup}{5}{subsection.3.1}\protected@file@percent }
+\citation{Basu2017}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}AIMD reuse-window policy (proposed)}{6}{subsection.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Baseline policies}{6}{subsection.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Fixed TTL.}{6}{section*.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{d-TTL.}{6}{section*.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{EWMA-adaptive (secondary baseline).}{6}{section*.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{FreshCache-style fitted gate.}{6}{section*.9}\protected@file@percent }
+\citation{Rajpurkar2016}
+\citation{Iyer2017}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Workload: real corpus and matched synthetic simulator}{7}{subsection.3.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}Experiments}{7}{section.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Setup}{7}{subsection.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Real-data result: AIMD is dominated, not non-dominated}{7}{subsection.4.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Reduction-vs-staleness operating points for all six policy families on the real-content versioned corpus (mean over 20 replicate seeds at the 0.20 headline spot-check rate). AIMD's full 9-point knob grid is dominated outright by FreshCache (raw and pooled), and matched, not beaten, by the simpler EWMA-adaptive baseline.}}{8}{figure.2}\protected@file@percent }
+\newlabel{fig:frontier}{{2}{8}{Reduction-vs-staleness operating points for all six policy families on the real-content versioned corpus (mean over 20 replicate seeds at the 0.20 headline spot-check rate). AIMD's full 9-point knob grid is dominated outright by FreshCache (raw and pooled), and matched, not beaten, by the simpler EWMA-adaptive baseline}{figure.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Real-corpus hit rate and stale rate ranges per policy family (headline 0.20 spot-check rate).}}{9}{table.1}\protected@file@percent }
+\newlabel{tab:realdata}{{1}{9}{Real-corpus hit rate and stale rate ranges per policy family (headline 0.20 spot-check rate)}{table.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Independent statistical re-verification of the previous iteration's synthetic claim}{9}{subsection.4.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Self-reported versus independently re-derived non-dominated fraction, per volatility regime.}}{10}{table.2}\protected@file@percent }
+\newlabel{tab:reversal}{{2}{10}{Self-reported versus independently re-derived non-dominated fraction, per volatility regime}{table.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Fraction of AIMD's 12 knob points not dominated by each baseline family, per regime.}}{10}{table.3}\protected@file@percent }
+\newlabel{tab:baseline}{{3}{10}{Fraction of AIMD's 12 knob points not dominated by each baseline family, per regime}{table.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Convergence sample-efficiency, with confidence intervals}{11}{subsection.4.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Self-reported versus independently bootstrap-CI'd mean fraction of AIMD knob points non-dominated by the joint baseline frontier, per volatility regime, on the previous iteration's synthetic replay. The independent re-derivation overturns the self-reported result in every regime.}}{11}{figure.3}\protected@file@percent }
+\newlabel{fig:convergence}{{3}{11}{Self-reported versus independently bootstrap-CI'd mean fraction of AIMD knob points non-dominated by the joint baseline frontier, per volatility regime, on the previous iteration's synthetic replay. The independent re-derivation overturns the self-reported result in every regime}{figure.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Median low-repeat convergence-event count [95\% CI], per policy and volatility regime.}}{11}{table.4}\protected@file@percent }
+\newlabel{tab:convergence}{{4}{11}{Median low-repeat convergence-event count [95\% CI], per policy and volatility regime}{table.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Ablations}{12}{subsection.4.5}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces AIMD hit rate and stale rate as a function of spot-check rate (a=0.5, b=0.5), confirming the paper's mechanistic explanation for AIMD's slow convergence: hit rate rises with spot-check density while stale rate stays roughly flat.}}{12}{figure.4}\protected@file@percent }
+\newlabel{fig:ablation}{{4}{12}{AIMD hit rate and stale rate as a function of spot-check rate (a=0.5, b=0.5), confirming the paper's mechanistic explanation for AIMD's slow convergence: hit rate rises with spot-check density while stale rate stays roughly flat}{figure.4}{}}
+\@writefile{toc}{\contentsline {paragraph}{Unchecked-hit crediting.}{13}{section*.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Spot-check-rate sensitivity.}{13}{section*.11}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Discussion}{13}{section.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{A result that reversed under independent scrutiny, not merely a mixed one.}{13}{section*.12}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Why the reversal happened, mechanistically.}{13}{section*.13}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Convergence speed remains genuinely unresolved in AIMD's favor.}{14}{section*.14}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Limitations.}{14}{section*.15}\protected@file@percent }
+\bibstyle{plainnat}
+\bibdata{references}
+\bibcite{ToolCacheAgent2026}{{1}{2026}{{Anonymous}}{{}}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Conclusion}{15}{section.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Future work.}{15}{section*.16}\protected@file@percent }
+\bibcite{Bang2023}{{2}{2023}{{Bang}}{{}}}
+\bibcite{Basu2017}{{3}{2017}{{Basu et~al.}}{{Basu, Sundarrajan, Ghaderi, Shakkottai, and Sitaraman}}}
+\bibcite{Cate1992}{{4}{1992}{{Cate}}{{}}}
+\bibcite{Chen2025}{{5}{2025}{{Chen et~al.}}{{Chen, Ye, Tang, Sun, Tian, Wang, Li, Wen, Han, and Zhang}}}
+\bibcite{Chiu1989}{{6}{1989}{{Chiu and Jain}}{{}}}
+\bibcite{Fielding2014}{{7}{2014}{{Fielding et~al.}}{{Fielding, Nottingham, and Reschke}}}
+\bibcite{Iyer2017}{{8}{2017}{{Iyer et~al.}}{{Iyer, Dandekar, and Csernai}}}
+\bibcite{Jacobson1988}{{9}{1988}{{Jacobson}}{{}}}
+\bibcite{Kumar2026}{{10}{2026}{{Kumar et~al.}}{{Kumar, Kataria, Oh, Manzoor, and Singh}}}
+\bibcite{Li2024}{{11}{2024}{{Li et~al.}}{{Li, Xu, Wang, von Riedemann, Zhang, and Liu}}}
+\bibcite{Mansoor2026}{{12}{2026}{{Mansoor et~al.}}{{Mansoor, Ahmad, and Yoon}}}
+\bibcite{Rajpurkar2016}{{13}{2016}{{Rajpurkar et~al.}}{{Rajpurkar, Zhang, Lopyrev, and Liang}}}
+\bibcite{Schroeder2025}{{14}{2025}{{Schroeder et~al.}}{{Schroeder, Desai, Cuadron, Chu, Liu, Zhao, Krusche, Kemper, Zaharia, and Gonzalez}}}
+\bibcite{Thoma2023}{{15}{2023}{{Thoma et~al.}}{{Thoma, Niesler, Funke, Leander, Mayr, Pohl, Davi, and G{\"u}neysu}}}
+\gdef \@abspage@last{17}

@@ -1,0 +1,115 @@
+\begin{thebibliography}{15}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Anonymous(2026)]{ToolCacheAgent2026}
+Anonymous.
+\newblock Toolcacheagent: Accelerating llm agent through intelligent tool call
+  caching.
+\newblock OpenReview preprint, 2026.
+
+\bibitem[Bang(2023)]{Bang2023}
+Fu~Bang.
+\newblock Gptcache: An open-source semantic cache for llm applications enabling
+  faster answers and cost savings.
+\newblock In \emph{Proceedings of the 3rd Workshop for Natural Language
+  Processing Open Source Software (NLP-OSS 2023)}, 2023.
+\newblock \doi{10.18653/v1/2023.nlposs-1.24}.
+
+\bibitem[Basu et~al.(2017)Basu, Sundarrajan, Ghaderi, Shakkottai, and
+  Sitaraman]{Basu2017}
+S.~Basu, Aditya Sundarrajan, Javad Ghaderi, S.~Shakkottai, and R.~Sitaraman.
+\newblock Adaptive ttl-based caching for content delivery.
+\newblock In \emph{Proceedings of the 2017 ACM SIGMETRICS / International
+  Conference on Measurement and Modeling of Computer Systems}, 2017.
+\newblock \doi{10.1145/3078505.3078560}.
+
+\bibitem[Cate(1992)]{Cate1992}
+V.~Cate.
+\newblock The alex global filesystem.
+\newblock In \emph{USENIX File Systems Workshop}, Ann Arbor, 1992.
+
+\bibitem[Chen et~al.(2025)Chen, Ye, Tang, Sun, Tian, Wang, Li, Wen, Han, and
+  Zhang]{Chen2025}
+Qiaoling Chen, Zhisheng Ye, Tian Tang, Peng Sun, Boyu Tian, Guoteng Wang,
+  Shenggui Li, Yonggang Wen, Zhenhua Han, and Tianwei Zhang.
+\newblock Concur: Proactive agent-level admission control for efficient agentic
+  batch inference.
+\newblock \emph{arXiv preprint arXiv:2601.22705}, 2025.
+\newblock \doi{10.48550/arXiv.2601.22705}.
+
+\bibitem[Chiu and Jain(1989)]{Chiu1989}
+D.~Chiu and R.~Jain.
+\newblock Analysis of the increase and decrease algorithms for congestion
+  avoidance in computer networks.
+\newblock \emph{Computer Networks and ISDN Systems}, 17:\penalty0 1--14, 1989.
+\newblock \doi{10.1016/0169-7552(89)90019-6}.
+
+\bibitem[Fielding et~al.(2014)Fielding, Nottingham, and Reschke]{Fielding2014}
+R.~T. Fielding, M.~Nottingham, and J.~F. Reschke.
+\newblock Hypertext transfer protocol (http/1.1): Caching.
+\newblock Technical Report RFC 7234, IETF, 2014.
+
+\bibitem[Iyer et~al.(2017)Iyer, Dandekar, and Csernai]{Iyer2017}
+Shankar Iyer, Nikhil Dandekar, and Kornél Csernai.
+\newblock First quora dataset release: Question pairs.
+\newblock Quora Data blog,
+  \url{https://data.quora.com/First-Quora-Dataset-Release-Question-Pairs},
+  2017.
+
+\bibitem[Jacobson(1988)]{Jacobson1988}
+V.~Jacobson.
+\newblock Congestion avoidance and control.
+\newblock \emph{ACM SIGCOMM Computer Communication Review}, 18\penalty0
+  (4):\penalty0 314--329, 1988.
+\newblock \doi{10.1145/52324.52356}.
+
+\bibitem[Kumar et~al.(2026)Kumar, Kataria, Oh, Manzoor, and Singh]{Kumar2026}
+Abhishek~Vijaya Kumar, Bhaskar Kataria, Byungsoo Oh, Emaad~A. Manzoor, and
+  Rachee Singh.
+\newblock Tvcache: A stateful tool-value cache for post-training llm agents.
+\newblock \emph{arXiv preprint arXiv:2602.10986}, 2026.
+\newblock \doi{10.48550/arXiv.2602.10986}.
+
+\bibitem[Li et~al.(2024)Li, Xu, Wang, von Riedemann, Zhang, and Liu]{Li2024}
+Jiaxing Li, Chi Xu, Feng Wang, Isaac~M. von Riedemann, Cong Zhang, and
+  Jiangchuan Liu.
+\newblock Scalm: Towards semantic caching for automated chat services with
+  large language models.
+\newblock In \emph{2024 IEEE/ACM 32nd International Symposium on Quality of
+  Service (IWQoS)}, pages 1--10, 2024.
+\newblock \doi{10.1109/IWQoS61813.2024.10682957}.
+
+\bibitem[Mansoor et~al.(2026)Mansoor, Ahmad, and Yoon]{Mansoor2026}
+Muhammad Mansoor, Tahir Ahmad, and Y.~Yoon.
+\newblock Risk-constrained freshness-aware semantic caching for open-web
+  retrieval-augmented llms.
+\newblock 2026.
+\newblock \doi{10.48550/arXiv.2607.04281}.
+
+\bibitem[Rajpurkar et~al.(2016)Rajpurkar, Zhang, Lopyrev, and
+  Liang]{Rajpurkar2016}
+Pranav Rajpurkar, Jian Zhang, Konstantin Lopyrev, and Percy Liang.
+\newblock Squad: 100,000+ questions for machine comprehension of text.
+\newblock In \emph{Proceedings of the 2016 Conference on Empirical Methods in
+  Natural Language Processing}, pages 2383--2392, 2016.
+\newblock \doi{10.18653/v1/D16-1264}.
+
+\bibitem[Schroeder et~al.(2025)Schroeder, Desai, Cuadron, Chu, Liu, Zhao,
+  Krusche, Kemper, Zaharia, and Gonzalez]{Schroeder2025}
+L.~G. Schroeder, Aditya Desai, Alejandro Cuadron, K.~Chu, Shu Liu, Mark Zhao,
+  S.~Krusche, A.~Kemper, Matei Zaharia, and Joseph Gonzalez.
+\newblock vcache: Verified semantic prompt caching.
+\newblock 2025.
+
+\bibitem[Thoma et~al.(2023)Thoma, Niesler, Funke, Leander, Mayr, Pohl, Davi,
+  and G{\"u}neysu]{Thoma2023}
+Jan~Philipp Thoma, Christian Niesler, D.~R.~E. Funke, G.~Leander, P.~Mayr,
+  N.~Pohl, Lucas Davi, and Tim G{\"u}neysu.
+\newblock Clepsydracache -- preventing cache attacks with time-based evictions.
+\newblock In \emph{32nd USENIX Security Symposium (USENIX Security 23)}, 2023.
+
+\end{thebibliography}

@@ -1,0 +1,21 @@
+{
+  "type": "bar",
+  "title": "Frontier Non-Domination: Self-Reported vs Independently Verified",
+  "xlabel": "Volatility regime",
+  "ylabel": "Fraction of AIMD knob points non-dominated",
+  "aspect": "4:3",
+  "ylim": [-0.22, 1.1],
+  "annotate": true,
+  "categories": ["Low volatility", "Medium volatility", "High volatility", "Mean"],
+  "series": [
+    {
+      "label": "Self-reported (iteration 1)",
+      "values": [0.333, 0.667, 1.000, 0.667]
+    },
+    {
+      "label": "Independently re-derived (bootstrap CI)",
+      "values": [0.0, 0.0, 0.0, 0.0],
+      "errors": [0.167, 0.0, 0.210, 0.0]
+    }
+  ]
+}
